@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>د. عبد الحق العليدي </title>
+    <title>د. عبد الحق العليدي</title>
 
     <!-- استدعاء مكتبة FontAwesome للأيقونات الحقيقية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- خط Cairo الاحترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Tahoma, Arial, sans-serif;
+            font-family: 'Cairo', Tahoma, Arial, sans-serif;
         }
 
         :root {
@@ -49,23 +49,27 @@
                 var(--bg);
             color: var(--text);
             transition: 0.3s;
+            overflow-x: hidden;
         }
 
         .theme-btn {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border: 1px solid var(--border);
             border-radius: 50%;
             background: var(--card);
             color: var(--text);
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(2, 132, 199, 0.2);
             z-index: 100;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .theme-btn:hover {
@@ -74,10 +78,10 @@
 
         .admin-secret-btn {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
-            width: 42px;
-            height: 42px;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 50%;
@@ -100,9 +104,9 @@
 
         .container {
             width: 100%;
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 50px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
@@ -115,8 +119,8 @@
             flex: 1;
             width: 50%;
             background: var(--card);
-            border-radius: 30px;
-            padding: 45px;
+            border-radius: 25px;
+            padding: 35px;
             border: 1px solid var(--border);
             box-shadow: 0 20px 50px rgba(2, 132, 199, 0.15);
         }
@@ -131,8 +135,9 @@
 
         .side-image img {
             width: 100%;
+            max-width: 420px;
             height: auto;
-            max-height: 85vh;
+            max-height: 80vh;
             object-fit: contain;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(2, 132, 199, 0.2);
@@ -140,47 +145,49 @@
 
         .header {
             text-align: center;
-            margin-bottom: 38px;
+            margin-bottom: 28px;
         }
 
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             margin: auto;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 24px;
+            border-radius: 20px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
             color: white;
-            font-size: 34px;
+            font-size: 30px;
             box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
         }
 
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 6px;
             color: var(--text);
+            font-weight: 800;
         }
 
         .header p {
             color: var(--muted);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .section-title {
-            margin: 28px 0 18px;
-            padding-right: 12px;
+            margin: 22px 0 14px;
+            padding-right: 10px;
             border-right: 4px solid var(--primary);
-            font-size: 17px;
+            font-size: 15px;
             color: var(--primary);
+            font-weight: 700;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         .full {
@@ -190,11 +197,11 @@
         .field {
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            gap: 6px;
         }
 
         .field label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: var(--text);
         }
@@ -205,20 +212,20 @@
 
         input, select {
             width: 100%;
-            height: 54px;
+            height: 48px;
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 0 16px;
+            border-radius: 12px;
+            padding: 0 14px;
             background: var(--input);
             color: var(--text);
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
             transition: 0.25s;
         }
 
         input:focus, select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(2, 132, 199, 0.25);
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
         }
 
         .password-box {
@@ -226,45 +233,45 @@
         }
 
         .password-box input {
-            padding-left: 50px;
+            padding-left: 45px;
         }
 
         .show-password {
             position: absolute;
-            left: 15px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .submit-btn {
             width: 100%;
-            height: 57px;
-            margin-top: 30px;
+            height: 50px;
+            margin-top: 24px;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
             color: white;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.3);
             transition: 0.3s ease;
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(2, 132, 199, 0.4);
         }
 
         .login {
             text-align: center;
-            margin-top: 22px;
+            margin-top: 18px;
             color: var(--muted);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .login a {
@@ -276,18 +283,18 @@
 
         .error-message {
             display: none;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 12px;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 10px;
             background: rgba(225, 29, 72, 0.15);
             border: 1px solid #e11d48;
             color: #e11d48;
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* تصميم نافذة النجاح المنبثقة (Popup) تماماً مثل الصورة المطلوبة */
+        /* نافذة النجاح المنبثقة */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -303,11 +310,11 @@
 
         .modal-box {
             background: var(--card);
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 350px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             border: 1px solid var(--border);
             animation: scaleIn 0.3s ease;
@@ -319,33 +326,34 @@
         }
 
         .modal-icon {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             background: rgba(16, 185, 129, 0.15);
             color: #10b981;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 15px;
+            font-size: 26px;
+            margin: 0 auto 12px;
             border: 2px solid #10b981;
         }
 
         .modal-box h3 {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-weight: 800;
         }
 
         .modal-btn {
-            margin-top: 20px;
+            margin-top: 15px;
             background: #0284c7;
             color: white;
             border: none;
-            padding: 10px 30px;
+            padding: 8px 25px;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
@@ -355,24 +363,15 @@
             background: #0369a1;
         }
 
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column-reverse;
-                padding: 75px 12px 25px;
-            }
-            .card, .side-image {
-                width: 100%;
-            }
-        }
-
+        /* الهيدر العلوي للموقع */
         .top-navbar {
             width: 92%;
             max-width: 1150px;
             margin: 20px auto;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 12px 28px;
+            border-radius: 30px;
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -382,10 +381,10 @@
         .nav-logo-group {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: bold;
+            gap: 10px;
+            font-weight: 800;
             color: var(--text);
-            font-size: 19px;
+            font-size: 17px;
         }
 
         .nav-logo-group span {
@@ -397,13 +396,13 @@
         .nav-buttons-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .nav-btn {
-            padding: 10px 22px;
-            border-radius: 25px;
-            font-size: 14px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -424,14 +423,14 @@
         .features-section {
             width: 92%;
             max-width: 1100px;
-            margin: 40px auto;
+            margin: 35px auto;
             text-align: center;
         }
 
         .features-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
             background: linear-gradient(135deg, #0284c7, #0369a1, #38bdf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -440,112 +439,191 @@
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 22px;
-        }
-
-        @media (max-width: 1024px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            gap: 18px;
         }
 
         .feature-card {
             background: var(--card);
             border: 1px solid var(--border);
             color: var(--text);
-            border-radius: 26px;
-            padding: 35px 22px;
+            border-radius: 20px;
+            padding: 25px 15px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 180px;
+            min-height: 150px;
             transition: 0.4s;
         }
 
         .feature-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             border-color: var(--primary);
         }
 
         .feature-icon {
-            font-size: 38px;
-            margin-bottom: 14px;
+            font-size: 32px;
+            margin-bottom: 10px;
         }
 
         .feature-text {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 700;
         }
 
         .footer-showcase {
             width: 92%;
             max-width: 1100px;
-            margin: 40px auto 50px;
+            margin: 35px auto 45px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--card);
             border: 1px solid var(--border);
-            padding: 25px 35px;
-            border-radius: 25px;
-            gap: 20px;
+            padding: 20px 30px;
+            border-radius: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .ai-assistant-badge {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .widget-icon-box {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--card);
             border: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .ai-info h4 {
-            font-size: 16px;
-            margin-bottom: 4px;
+            font-size: 15px;
+            margin-bottom: 2px;
+            font-weight: 700;
         }
 
         .ai-info p {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--muted);
         }
 
         .social-icons-group {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .social-widget-btn {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
+            gap: 8px;
+            padding: 8px 15px;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 30px;
+            border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             text-decoration: none;
             color: var(--text);
             transition: 0.3s;
         }
 
         .social-widget-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+        }
+
+        /* 📱 تخصيصات وتعديلات الموبايل الاحترافية (Mobile Responsive) */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column-reverse;
+                padding: 20px 10px;
+                gap: 20px;
+            }
+            .card, .side-image {
+                width: 100%;
+            }
+            .card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+            .side-image img {
+                max-height: 220px; /* تصغير حجم الصورة على الموبايل لتوفير المساحة */
+                max-width: 100%;
+            }
+            .form-grid {
+                grid-template-columns: 1fr; /* جعل الحقول تحت بعضها عمودياً على التليفون */
+                gap: 12px;
+            }
+            .top-navbar {
+                width: 95%;
+                padding: 10px 15px;
+                margin: 15px auto;
+                border-radius: 20px;
+            }
+            .nav-logo-group {
+                font-size: 14px;
+            }
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr); /* كروت المميزات تظهر كل 2 بجانب بعض على الموبايل */
+                gap: 12px;
+            }
+            .features-title {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+            .feature-card {
+                padding: 18px 10px;
+                min-height: 130px;
+                border-radius: 16px;
+            }
+            .feature-icon {
+                font-size: 26px;
+            }
+            .feature-text {
+                font-size: 13px;
+            }
+            .footer-showcase {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+                gap: 15px;
+            }
+            .ai-assistant-badge {
+                flex-direction: column;
+                text-align: center;
+            }
+            .social-icons-group {
+                justify-content: center;
+                width: 100%;
+            }
+            .theme-btn {
+                top: 15px;
+                left: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+            .admin-secret-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -555,12 +633,12 @@
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
     <button class="admin-secret-btn" onclick="openAdminDashboard()" title="دخول لوحة التحكم">⚙️</button>
 
-    <!-- نافذة منبثقة للنجاح وتأكيد الدخول مطابقة تماماً للصورة -->
+    <!-- نافذة منبثقة للنجاح -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-box">
             <div class="modal-icon">✓</div>
             <h3>تم انشاء حسابك و تسجيل الدخول بنجاح !</h3>
-            <p style="color: var(--muted); font-size: 13px;">اضغط حسناً للاستمرار</p>
+            <p style="color: var(--muted); font-size: 12px;">اضغط حسناً للاستمرار</p>
             <button class="modal-btn" onclick="redirectToDashboard()">حسناً</button>
         </div>
     </div>
@@ -600,9 +678,9 @@
             </div>
 
             <div class="social-icons-group">
-                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 20px;"></i> واتساب المنصة</a>
-                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn"><i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 20px;"></i> صفحة الفيسبوك</a>
-                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn"><i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 20px;"></i> تليجرام الشرعية</a>
+                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 18px;"></i> واتساب المنصة</a>
+                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn"><i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 18px;"></i> صفحة الفيسبوك</a>
+                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn"><i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 18px;"></i> تليجرام الشرعية</a>
             </div>
         </div>
     </div>
@@ -753,14 +831,13 @@
                 governorate: document.getElementById("governorate").value,
                 password: pass,
                 totalLectures: 0,
-                watchedLectures: 0 // نسبة إنجاز تبدأ من صفر واقعياً
+                watchedLectures: 0
             };
 
             students.push(newStudent);
             localStorage.setItem("platformStudents", JSON.stringify(students));
             localStorage.setItem("currentStudent", JSON.stringify(newStudent));
 
-            // إظهار نافذة النجاح المنبثقة
             document.getElementById("successModal").style.display = "flex";
         }
 
@@ -781,7 +858,6 @@
                     return;
                 }
                 localStorage.setItem("currentStudent", JSON.stringify(student));
-                // إظهار نافذة النجاح المنبثقة
                 document.getElementById("successModal").style.display = "flex";
             } else {
                 errorDiv.innerText = "هذا الرقم غير مسجل، يرجى إنشاء حساب جديد!";
