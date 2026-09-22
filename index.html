@@ -19,7 +19,6 @@
         }
 
         :root {
-            /* الألوان المبهجة والموحدة في كل المنصة لتمنح التفاؤل والحيوية */
             --bg: #f0f4f8;
             --card: #ffffff;
             --primary: #0284c7;
@@ -44,20 +43,10 @@
 
         body {
             min-height: 100vh;
-            /* توحيد خلفية المنصة بالكامل بنفس التدرجات المبهجة والمشرقة */
             background:
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(56, 189, 248, 0.25),
-                    transparent 40%
-                ),
-                radial-gradient(
-                    circle at 10% 90%,
-                    rgba(14, 165, 233, 0.2),
-                    transparent 45%
-                ),
+                radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.25), transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(14, 165, 233, 0.2), transparent 45%),
                 var(--bg);
-
             color: var(--text);
             transition: 0.3s;
         }
@@ -81,10 +70,8 @@
 
         .theme-btn:hover {
             transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 0 20px rgba(2, 132, 199, 0.5);
         }
 
-        /* زر دخول الأدمن السري في الزاوية اليمنى السفلى */
         .admin-secret-btn {
             position: fixed;
             bottom: 15px;
@@ -109,8 +96,6 @@
             background: var(--primary);
             color: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
-            transform: scale(1.1);
         }
 
         .container {
@@ -129,7 +114,6 @@
         .card {
             flex: 1;
             width: 50%;
-            max-width: none;
             background: var(--card);
             border-radius: 30px;
             padding: 45px;
@@ -140,7 +124,6 @@
         .side-image {
             flex: 1;
             width: 50%;
-            max-width: none;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -220,8 +203,7 @@
             color: #e11d48;
         }
 
-        input,
-        select {
+        input, select {
             width: 100%;
             height: 54px;
             border: 1px solid var(--border);
@@ -234,14 +216,9 @@
             transition: 0.25s;
         }
 
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 15px rgba(2, 132, 199, 0.25);
-        }
-
-        input::placeholder {
-            color: #94a3b8;
         }
 
         .password-box {
@@ -297,18 +274,6 @@
             cursor: pointer;
         }
 
-        .message {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 12px;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid var(--success);
-            color: var(--success);
-            text-align: center;
-            font-weight: bold;
-        }
-
         .error-message {
             display: none;
             margin-top: 15px;
@@ -322,6 +287,74 @@
             font-size: 14px;
         }
 
+        /* تصميم نافذة النجاح المنبثقة (Popup) تماماً مثل الصورة المطلوبة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin: 0 auto 15px;
+            border: 2px solid #10b981;
+        }
+
+        .modal-box h3 {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .modal-btn {
+            margin-top: 20px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #0369a1;
+        }
+
         @media (max-width: 900px) {
             .container {
                 flex-direction: column-reverse;
@@ -330,21 +363,7 @@
             .card, .side-image {
                 width: 100%;
             }
-            .card {
-                padding: 28px 18px;
-                border-radius: 22px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .full {
-                grid-column: auto;
-            }
         }
-
-        /* =================================================== */
-        /* الواجهة الرئيسية المبهجة والمطورة */
-        /* =================================================== */
 
         .top-navbar {
             width: 92%;
@@ -394,18 +413,12 @@
             background: linear-gradient(135deg, #0284c7, #38bdf8);
             color: #ffffff;
             border: none;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
         }
 
         .nav-btn-outline {
             background: transparent;
             color: var(--text);
             border: 1px solid var(--primary);
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
         }
 
         .features-section {
@@ -436,14 +449,12 @@
             }
         }
 
-        /* كروت "ليه تشترك معانا" */
         .feature-card {
             background: var(--card);
             border: 1px solid var(--border);
             color: var(--text);
             border-radius: 26px;
             padding: 35px 22px;
-            position: relative;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             display: flex;
@@ -451,50 +462,24 @@
             justify-content: center;
             align-items: center;
             min-height: 180px;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(0deg, transparent, rgba(56, 189, 248, 0.15), transparent);
-            transform: rotate(45deg);
-            transition: 0.7s;
-            opacity: 0;
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-            transform: rotate(45deg) translateY(100%);
+            transition: 0.4s;
         }
 
         .feature-card:hover {
-            transform: translateY(-8px) scale(1.03);
+            transform: translateY(-8px);
             border-color: var(--primary);
-            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.2);
         }
 
         .feature-icon {
             font-size: 38px;
             margin-bottom: 14px;
-            background: linear-gradient(135deg, #0284c7, #38bdf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .feature-text {
             font-size: 18px;
             font-weight: bold;
-            color: var(--text);
-            line-height: 1.5;
         }
 
-        /* شريط الأيقونات السفلية بالأيقونات الحقيقية والروابط الخاصة بكم */
         .footer-showcase {
             width: 92%;
             max-width: 1100px;
@@ -506,7 +491,6 @@
             border: 1px solid var(--border);
             padding: 25px 35px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             gap: 20px;
             flex-wrap: wrap;
         }
@@ -527,19 +511,10 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: 0.3s;
-        }
-
-        .widget-icon-box:hover {
-            transform: scale(1.1);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(2, 132, 199, 0.3);
         }
 
         .ai-info h4 {
             font-size: 16px;
-            color: var(--text);
             margin-bottom: 4px;
         }
 
@@ -554,7 +529,6 @@
             flex-wrap: wrap;
         }
 
-        /* تصميم الأزرار بالهيئة والأيقونات الحقيقية */
         .social-widget-btn {
             display: flex;
             align-items: center;
@@ -567,73 +541,30 @@
             font-size: 14px;
             text-decoration: none;
             color: var(--text);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: 0.3s;
         }
 
         .social-widget-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
-
-        .whatsapp-widget:hover {
-            border-color: #25d366;
-            color: #25d366;
-        }
-        .whatsapp-widget:hover i {
-            color: #25d366;
-        }
-
-        .facebook-widget:hover {
-            border-color: #1877f2;
-            color: #1877f2;
-        }
-        .facebook-widget:hover i {
-            color: #1877f2;
-        }
-
-        .telegram-widget:hover {
-            border-color: #229ed9;
-            color: #229ed9;
-        }
-        .telegram-widget:hover i {
-            color: #229ed9;
-        }
-
-        @media (max-width: 768px) {
-            .footer-showcase {
-                flex-direction: column;
-                text-align: center;
-            }
-            .ai-assistant-badge {
-                flex-direction: column;
-            }
-            .social-icons-group {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
     </style>
 </head>
 
 <body>
 
-    <button
-        class="theme-btn"
-        id="themeBtn"
-        onclick="toggleTheme()">
-        🌙
-    </button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <button class="admin-secret-btn" onclick="openAdminDashboard()" title="دخول لوحة التحكم">⚙️</button>
 
-    <!-- زر الأدمن السري في الزاوية اليمنى السفلى -->
-    <button class="admin-secret-btn" onclick="openAdminDashboard()" title="دخول لوحة التحكم">
-        ⚙️
-    </button>
+    <!-- نافذة منبثقة للنجاح وتأكيد الدخول مطابقة تماماً للصورة -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-box">
+            <div class="modal-icon">✓</div>
+            <h3>تم انشاء حسابك و تسجيل الدخول بنجاح !</h3>
+            <p style="color: var(--muted); font-size: 13px;">اضغط حسناً للاستمرار</p>
+            <button class="modal-btn" onclick="redirectToDashboard()">حسناً</button>
+        </div>
+    </div>
 
-    <!-- =================================================== -->
-    <!-- الواجهة الرئيسية المبهجة والمطورة -->
-    <!-- =================================================== -->
     <div id="landingView">
         <div class="top-navbar">
             <div class="nav-logo-group">
@@ -648,51 +579,17 @@
         <div class="features-section">
             <h2 class="features-title">ليه تشترك معانا؟</h2>
             <div class="features-grid">
-                
-                <div class="feature-card">
-                    <div class="feature-icon">💡</div>
-                    <div class="feature-text">شرح مبسط ومفهوم</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <div class="feature-text">فيديوهات بروسومات توضيحية</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-text">تمارين تفاعلية على الدروس</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <div class="feature-text">مرونة كاملة في المذاكرة</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-text">اختبارات مستمرة</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <div class="feature-text">محتوى متكامل ومنظم</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <div class="feature-text">تحديث مستمر حسب المنهج</div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <div class="feature-text">مجتمع طلابي ضخم</div>
-                </div>
-
+                <div class="feature-card"><div class="feature-icon">💡</div><div class="feature-text">شرح مبسط ومفهوم</div></div>
+                <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-text">فيديوهات بروسومات توضيحية</div></div>
+                <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-text">تمارين تفاعلية على الدروس</div></div>
+                <div class="feature-card"><div class="feature-icon">🛡️</div><div class="feature-text">مرونة كاملة في المذاكرة</div></div>
+                <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-text">اختبارات مستمرة</div></div>
+                <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-text">محتوى متكامل ومنظم</div></div>
+                <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-text">تحديث مستمر حسب المنهج</div></div>
+                <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-text">مجتمع طلابي ضخم</div></div>
             </div>
         </div>
 
-        <!-- شريط الأيقونات السفلية -->
         <div class="footer-showcase">
             <div class="ai-assistant-badge">
                 <div class="widget-icon-box">🤖</div>
@@ -703,85 +600,35 @@
             </div>
 
             <div class="social-icons-group">
-                <!-- أيقونة الواتساب الحقيقية مع رقم الهاتف -->
-                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn whatsapp-widget" title="تواصل عبر الواتساب">
-                    <i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 20px;"></i> واتساب المنصة
-                </a>
-                
-                <!-- أيقونة الفيسبوك الحقيقية مع اللينك -->
-                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn facebook-widget" title="صفحة الفيسبوك">
-                    <i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 20px;"></i> صفحة الفيسبوك
-                </a>
-
-                <!-- أيقونة التليجرام الحقيقية مع اللينك -->
-                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn telegram-widget" title="قناة التليجرام: تقريب للعلوم الشرعية 🌸🌸 مرحبًا بوصية رسول الله ﷺ">
-                    <i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 20px;"></i> تليجرام الشرعية
-                </a>
+                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 20px;"></i> واتساب المنصة</a>
+                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn"><i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 20px;"></i> صفحة الفيسبوك</a>
+                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn"><i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 20px;"></i> تليجرام الشرعية</a>
             </div>
         </div>
     </div>
 
-    <!-- حاوية استمارة التسجيل والدخول والصورة الجانبية -->
     <div class="container" id="formsContainer">
-
-        <!-- 1. نموذج إنشاء حساب جديد -->
+        <!-- 1. نموذج إنشاء حساب -->
         <div class="card" id="registerCard">
-
             <div class="header">
                 <div class="logo">🎓</div>
-                <h1> د. عبد الحق العليدي</h1>
+                <h1>د. عبد الحق العليدي</h1>
                 <p>إنشاء حساب طالب جديد</p>
             </div>
 
             <form id="registerForm" onsubmit="registerStudent(event)">
-
                 <div class="section-title">بيانات الطالب</div>
-
                 <div class="form-grid">
-                    <div class="field">
-                        <label>الاسم الأول <span class="required">*</span></label>
-                        <input type="text" id="firstName" placeholder="اكتب الاسم الأول" required>
-                    </div>
-
-                    <div class="field">
-                        <label>الاسم الأخير <span class="required">*</span></label>
-                        <input type="text" id="lastName" placeholder="اكتب الاسم الأخير" required>
-                    </div>
-
-                    <div class="field">
-                        <label>رقم هاتف الطالب <span class="required">*</span></label>
-                        <input type="tel" id="studentPhone" placeholder="01xxxxxxxxx" maxlength="11" pattern="01[0-9]{9}" required>
-                    </div>
-
-                    <div class="field">
-                        <label>رقم هاتف ولي الأمر <span class="required">*</span></label>
-                        <input type="tel" id="parentPhone" placeholder="01xxxxxxxxx" maxlength="11" pattern="01[0-9]{9}" required>
-                    </div>
-
-                    <div class="field full">
-                        <label>البريد الإلكتروني <span class="required">*</span></label>
-                        <input type="email" id="email" placeholder="example@email.com" required>
-                    </div>
-
-                    <div class="field">
-                        <label>كلمة السر <span class="required">*</span></label>
-                        <div class="password-box">
-                            <input type="password" id="password" placeholder="أدخل كلمة السر" minlength="6" required>
-                            <button type="button" class="show-password" onclick="showPassword('password', this)">👁️</button>
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>تأكيد كلمة السر <span class="required">*</span></label>
-                        <div class="password-box">
-                            <input type="password" id="confirmPassword" placeholder="أعد كتابة كلمة السر" minlength="6" required>
-                            <button type="button" class="show-password" onclick="showPassword('confirmPassword', this)">👁️</button>
-                        </div>
-                    </div>
+                    <div class="field"><label>الاسم الأول <span class="required">*</span></label><input type="text" id="firstName" required></div>
+                    <div class="field"><label>الاسم الأخير <span class="required">*</span></label><input type="text" id="lastName" required></div>
+                    <div class="field"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="studentPhone" maxlength="11" required></div>
+                    <div class="field"><label>رقم هاتف ولي الأمر <span class="required">*</span></label><input type="tel" id="parentPhone" maxlength="11" required></div>
+                    <div class="field full"><label>البريد الإلكتروني <span class="required">*</span></label><input type="email" id="email" required></div>
+                    <div class="field"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="password" minlength="6" required><button type="button" class="show-password" onclick="showPassword('password', this)">👁️</button></div></div>
+                    <div class="field"><label>تأكيد كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="confirmPassword" minlength="6" required><button type="button" class="show-password" onclick="showPassword('confirmPassword', this)">👁️</button></div></div>
                 </div>
 
                 <div class="section-title">البيانات الدراسية</div>
-
                 <div class="form-grid">
                     <div class="field">
                         <label>اختر الصف الدراسي <span class="required">*</span></label>
@@ -793,47 +640,23 @@
                             <option value="الفرقة الرابعة">الفرقة الرابعة</option>
                         </select>
                     </div>
-
                     <div class="field">
                         <label>اختر المحافظة <span class="required">*</span></label>
                         <select id="governorate" required>
                             <option value="">اختر المحافظة</option>
-                            <option>بورسعيد</option>
-                            <option>القاهرة</option>
-                            <option>الجيزة</option>
-                            <option>الإسكندرية</option>
-                            <option>الإسماعيلية</option>
-                            <option>السويس</option>
-                            <option>دمياط</option>
-                            <option>الدقهلية</option>
-                            <option>الشرقية</option>
-                            <option>القليوبية</option>
-                            <option>الغربية</option>
-                            <option>كفر الشيخ</option>
-                            <option>البحيرة</option>
+                            <option>بورسعيد</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
                         </select>
                     </div>
                 </div>
 
                 <button type="submit" class="submit-btn">إنشاء الحساب</button>
-
-                <div class="message" id="successMessage">
-                    🎉 تم إنشاء الحساب بنجاح! جاري التوجيه...
-                </div>
-
                 <div class="error-message" id="registerErrorMessage"></div>
-
-                <div class="login">
-                    لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a>
-                </div>
-
+                <div class="login">لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a></div>
             </form>
-
         </div>
 
         <!-- 2. نموذج تسجيل الدخول -->
         <div class="card" id="loginCard" style="display: none;">
-
             <div class="header">
                 <div class="logo">🎓</div>
                 <h1>تسجيل الدخول</h1>
@@ -841,42 +664,23 @@
             </div>
 
             <form onsubmit="loginStudent(event)">
-
                 <div class="form-grid">
-                    <div class="field full">
-                        <label>رقم هاتف الطالب <span class="required">*</span></label>
-                        <input type="tel" id="loginPhone" placeholder="01xxxxxxxxx" maxlength="11" pattern="01[0-9]{9}" required>
-                    </div>
-
-                    <div class="field full">
-                        <label>كلمة السر <span class="required">*</span></label>
-                        <div class="password-box">
-                            <input type="password" id="loginPassword" placeholder="أدخل كلمة السر" required>
-                            <button type="button" class="show-password" onclick="showPassword('loginPassword', this)">👁️</button>
-                        </div>
-                    </div>
+                    <div class="field full"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="loginPhone" maxlength="11" required></div>
+                    <div class="field full"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="loginPassword" required><button type="button" class="show-password" onclick="showPassword('loginPassword', this)">👁️</button></div></div>
                 </div>
 
                 <button type="submit" class="submit-btn">دخول المنصة</button>
-
                 <div class="error-message" id="loginErrorMessage"></div>
-
-                <div class="login">
-                    ليس لديك حساب؟ <a onclick="showRegisterForm()">حساب جديد</a>
-                </div>
-
+                <div class="login">ليس لديك حساب؟ <a onclick="showRegisterForm()">حساب جديد</a></div>
             </form>
-
         </div>
 
         <div class="side-image">
             <img src="doctor.png" alt="د. عبد الحق">
         </div>
-
     </div>
 
     <script>
-
         function showRegisterForm() {
             document.getElementById("landingView").style.display = "none";
             document.getElementById("formsContainer").style.display = "flex";
@@ -893,61 +697,48 @@
 
         function toggleTheme() {
             document.body.classList.toggle("dark");
-            const button = document.getElementById("themeBtn");
-            if (document.body.classList.contains("dark")) {
-                button.innerHTML = "☀️";
-            } else {
-                button.innerHTML = "🌙";
-            }
+            const btn = document.getElementById("themeBtn");
+            btn.innerHTML = document.body.classList.contains("dark") ? "☀️" : "🌙";
         }
 
-        function showPassword(id, button) {
+        function showPassword(id, btn) {
             const input = document.getElementById(id);
             if (input.type === "password") {
                 input.type = "text";
-                button.innerHTML = "🙈";
+                btn.innerHTML = "🙈";
             } else {
                 input.type = "password";
-                button.innerHTML = "👁️";
+                btn.innerHTML = "👁️";
             }
         }
 
-        // دالة فتح لوحة التحكم بكلمة سر للأدمن
         function openAdminDashboard() {
-            const password = prompt("أدخل كلمة سر لوحة التحكم:");
-            const adminPassword = "admin123"; 
-
-            if (password === adminPassword) {
+            const pass = prompt("أدخل كلمة سر لوحة التحكم:");
+            if (pass === "admin123") {
                 window.location.href = "admin.html";
-            } else if (password !== null) {
+            } else if (pass !== null) {
                 alert("كلمة السر غير صحيحة!");
             }
         }
 
-        // تسجيل طالب جديد مع منع التكرار بناءً على رقم الهاتف أو البريد الإلكتروني
         function registerStudent(event) {
             event.preventDefault();
-
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+            const pass = document.getElementById("password").value;
+            const confirmPass = document.getElementById("confirmPassword").value;
             const phone = document.getElementById("studentPhone").value;
             const email = document.getElementById("email").value;
-
             const errorDiv = document.getElementById("registerErrorMessage");
             errorDiv.style.display = "none";
 
-            if (password !== confirmPassword) {
+            if (pass !== confirmPass) {
                 errorDiv.innerText = "كلمة السر وتأكيد كلمة السر غير متطابقين";
                 errorDiv.style.display = "block";
                 return;
             }
 
             let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            
-            // التحقق مما إذا كان رقم الهاتف أو البريد الإلكتروني مسجلاً مسبقاً
-            let existingStudent = students.find(s => s.phone === phone || s.email === email);
-            if (existingStudent) {
-                errorDiv.innerText = "هذا الرقم أو البريد الإلكتروني مسجل بالفعل، يرجى تسجيل الدخول!";
+            if (students.find(s => s.phone === phone || s.email === email)) {
+                errorDiv.innerText = "هذا الرقم أو البريد الإلكتروني مسجل بالفعل!";
                 errorDiv.style.display = "block";
                 return;
             }
@@ -958,64 +749,49 @@
                 phone: phone,
                 email: email,
                 parentPhone: document.getElementById("parentPhone").value,
-                grade: document.getElementById("grade").value, // سيحفظ القيمة المختارة بدقة (مثل: الفرقة الثالثة)
+                grade: document.getElementById("grade").value,
                 governorate: document.getElementById("governorate").value,
-                password: password,
-                lastLogin: new Date().toLocaleTimeString('ar-EG'),
-                lastLogout: '-',
-                totalLectures: 10,
-                watchedLectures: 1
+                password: pass,
+                totalLectures: 0,
+                watchedLectures: 0 // نسبة إنجاز تبدأ من صفر واقعياً
             };
 
             students.push(newStudent);
             localStorage.setItem("platformStudents", JSON.stringify(students));
-            
-            // حفظ بيانات الطالب الحالي لنقلها فوراً للداشبورد (dashboard.html)
             localStorage.setItem("currentStudent", JSON.stringify(newStudent));
 
-            const message = document.getElementById("successMessage");
-            message.style.display = "block";
-
-            setTimeout(function() {
-                window.location.href = "dashboard.html";
-            }, 1000);
+            // إظهار نافذة النجاح المنبثقة
+            document.getElementById("successModal").style.display = "flex";
         }
 
-        // تسجيل الدخول والتحقق من صحة البيانات ونقلها للداشبورد
         function loginStudent(event) {
             event.preventDefault();
-            
             const phone = document.getElementById("loginPhone").value;
-            const password = document.getElementById("loginPassword").value;
+            const pass = document.getElementById("loginPassword").value;
             const errorDiv = document.getElementById("loginErrorMessage");
             errorDiv.style.display = "none";
 
             let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            
             let student = students.find(s => s.phone === phone);
-            
+
             if (student) {
-                // التحقق من كلمة السر إذا كانت مخزنة
-                if (student.password && student.password !== password) {
+                if (student.password && student.password !== pass) {
                     errorDiv.innerText = "كلمة السر غير صحيحة!";
                     errorDiv.style.display = "block";
                     return;
                 }
-
-                student.lastLogin = new Date().toLocaleTimeString('ar-EG');
-                localStorage.setItem("platformStudents", JSON.stringify(students));
-                
-                // حفظ الطالب الحالي لجلب اسمه وفرقته في الداشبورد تلقائياً
                 localStorage.setItem("currentStudent", JSON.stringify(student));
-                
-                window.location.href = "dashboard.html";
+                // إظهار نافذة النجاح المنبثقة
+                document.getElementById("successModal").style.display = "flex";
             } else {
                 errorDiv.innerText = "هذا الرقم غير مسجل، يرجى إنشاء حساب جديد!";
                 errorDiv.style.display = "block";
             }
         }
 
+        function redirectToDashboard() {
+            window.location.href = "dashboard.html";
+        }
     </script>
-
 </body>
 </html>

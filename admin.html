@@ -41,7 +41,7 @@
         body { background: var(--bg-color); color: var(--text-main); padding: 25px; direction: rtl; min-height: 100vh; }
         
         /* شريط الإدارة العلوي */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 20px 30px; border-radius: 20px; border: 2px solid var(--border-color); margin-bottom: 25px; box-shadow: var(--card-shadow); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 20px 30px; border-radius: 20px; border: 2px solid var(--border-color); margin-bottom: 25px; box-shadow: var(--card-shadow); flex-wrap: wrap; gap: 15px; }
         .top-bar h2 { color: var(--primary-color); font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 12px; }
         
         .top-actions { display: flex; gap: 12px; align-items: center; }
@@ -80,6 +80,8 @@
         .btn-danger { background: #f43f5e; color: white; }
         .btn-danger:hover { background: #e11d48; }
         .btn-info { background: var(--primary-color); color: white; }
+        
+        .loading-text { text-align: center; color: var(--text-muted); padding: 40px; font-weight: 600; }
     </style>
 </head>
 <body id="pageBody">
@@ -88,6 +90,7 @@
     <div class="top-bar">
         <h2><i class="fa-solid fa-shield-halved"></i> لوحة الإدارة والتحكم الذكية</h2>
         <div class="top-actions">
+            <button class="btn" onclick="loadAdminData()" style="background: #10b981;"><i class="fa-solid fa-rotate"></i> تحديث البيانات</button>
             <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i> الوضع</button>
             <a href="index.html" class="btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
         </div>
@@ -112,15 +115,15 @@
         <div class="stat-card">
             <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat-info">
-                <h3 id="totalVisits">1</h3>
+                <h3 id="totalVisits">--</h3>
                 <p>إجمالي زيارات المنصة</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);"><i class="fa-solid fa-signal"></i></div>
             <div class="stat-info">
-                <h3 id="onlineCount" style="color: #10b981;">1</h3>
-                <p>الطلاب المتواجدون الآن</p>
+                <h3 id="onlineCount" style="color: #10b981;">نشط</h3>
+                <p>حالة النظام السحابي</p>
             </div>
         </div>
     </div>
@@ -128,7 +131,7 @@
     <!-- قسم إدارة الطلاب المتقدم -->
     <div class="section-box">
         <div class="section-header">
-            <h3><i class="fa-solid fa-user-graduate"></i> متابعة حضور ودرجات الطلاب (النسبة والدروس المتراكمة)</h3>
+            <h3><i class="fa-solid fa-user-graduate"></i> متابعة حضور ودرجات الطلاب المسجلين سحابياً</h3>
         </div>
         
         <div class="controls-wrapper">
@@ -142,20 +145,24 @@
                         <th>اسم الطالب ورقم الهاتف</th>
                         <th>رقم ولي الأمر</th>
                         <th>الفرقة الدراسية</th>
-                        <th>آخر دخول / خروج</th>
+                        <th>وقت التسجيل / الدخول</th>
                         <th>الحالة وما راكمه</th>
                         <th>نسبة المحاضرات (%)</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="studentsTableBody">
-                    <!-- البيانات ستظهر هنا تلقائياً عند تسجيل أي طالب حقيقي -->
+                    <tr><td colspan="7" class="loading-text">جاري جلب بيانات الطلاب من السحابة...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
+        // رابط جوجل شيت (Google Apps Script Web App URL)
+        // سيتم ربطه هنا ليجلب البيانات الحية فوراً من أي جهاز يسجل منه الطلاب
+        const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"; 
+
         // تبديل الثيم
         function toggleTheme() {
             const body = document.getElementById("pageBody");
@@ -167,16 +174,31 @@
             if (localStorage.getItem("adminTheme") === "light") {
                 document.getElementById("pageBody").classList.add("light-mode");
             }
-            // مسح أي بيانات سابقة والتأكد من البدء بلوحة نظيفة تماماً
             loadAdminData();
         });
 
-        // تحميل البيانات ورسم الجدول
-        function loadAdminData() {
-            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            document.getElementById("totalStudents").innerText = students.length;
-            
+        // تحميل البيانات من السحابة أو التخزين المشترك
+        async function loadAdminData() {
             let tbody = document.getElementById("studentsTableBody");
+            tbody.innerHTML = `<tr><td colspan="7" class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحديث البيانات...</td></tr>`;
+
+            let students = [];
+
+            try {
+                // إذا تم ربط الرابط الخاص بـ Google Sheets سيجلب البيانات الحقيقية من الموبايلات الأخرى
+                if (WEB_APP_URL && WEB_APP_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+                    let response = await fetch(WEB_APP_URL);
+                    students = await response.json();
+                } else {
+                    // كوضع احتياطي مؤقت، يقرأ من الـ localStorage المشترك أو يدمج مع بيانات محلية
+                    students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+                }
+            } catch (error) {
+                console.log("خطأ في الاتصال بالسحابة، يتم الاعتماد على التخزين المحلي:", error);
+                students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            }
+
+            document.getElementById("totalStudents").innerText = students.length;
             tbody.innerHTML = "";
 
             if (students.length === 0) {
@@ -193,14 +215,13 @@
                 tbody.innerHTML += `
                     <tr>
                         <td>
-                            <strong><i class="fa-solid fa-user" style="color:var(--primary-color); margin-left:5px;"></i> ${st.firstName} ${st.lastName}</strong><br>
-                            <span style="font-size: 11px; color: var(--text-muted);">📱 ${st.phone}</span>
+                            <strong><i class="fa-solid fa-user" style="color:var(--primary-color); margin-left:5px;"></i> ${st.firstName || ''} ${st.lastName || ''}</strong><br>
+                            <span style="font-size: 11px; color: var(--text-muted);">📱 ${st.phone || '-'}</span>
                         </td>
                         <td>📞 ${st.parentPhone || 'غير مسجل'}</td>
                         <td>🎓 ${st.grade || 'غير محدد'}</td>
                         <td>
-                            <span style="font-size: 11px;">📥 ${st.lastLogin || 'الآن'}</span><br>
-                            <span style="font-size: 11px; color: var(--text-muted);">📤 ${st.lastLogout || '-'}</span>
+                            <span style="font-size: 11px;">📥 ${st.timestamp || st.lastLogin || 'الآن'}</span>
                         </td>
                         <td>
                             <span style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> مراكم ${remaining} دروس</span><br>
