@@ -1,0 +1,30 @@
+/* ضبط الحاوية لتُظهر الفورم والصورة بجانب بعضهما */
+.container {
+    display: flex;
+    flex-direction: row-reverse; /* يجعل الصورة على اليمين والفورم على اليسار */
+    align-items: center;
+    justify-content: center;
+    gap: 40px; /* مسافة بين الصورة والفورم */
+    max-width: 1300px; /* توسيع الحاوية لتتسع للطرفين */
+}
+
+/* تنسيق الصورة وحجمها */
+.side-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.side-image img {
+    width: 100%;
+    max-width: 650px; /* يمكنكِ التحكم في حجم الصورة من هنا */
+    height: auto;
+    border-radius: 20px;
+}
+
+/* للتجاوب مع الموبايل والشاشات الصغيرة */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+}
