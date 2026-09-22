@@ -49,7 +49,7 @@
         .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
         .theme-toggle { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 9px 16px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; }
 
-        /* كروت الإحصائيات الاحترافية */
+        /* كروت الإحصائيات */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; padding: 22px; display: flex; align-items: center; gap: 20px; box-shadow: var(--card-shadow); }
         .stat-icon { width: 60px; height: 60px; border-radius: 16px; background: rgba(56, 189, 248, 0.15); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary-color); }
@@ -72,14 +72,17 @@
         tr:hover td { background: var(--hover-color); }
 
         /* شريط النسبة المئوية */
-        .progress-container { width: 120px; background: rgba(125, 211, 252, 0.2); border-radius: 10px; height: 8px; margin-top: 6px; overflow: hidden; }
+        .progress-container { width: 100px; background: rgba(125, 211, 252, 0.2); border-radius: 10px; height: 8px; margin-top: 4px; overflow: hidden; }
         .progress-bar { height: 100%; background: var(--primary-color); border-radius: 10px; }
 
-        /* الأزرار المصغرة */
-        .action-btn { padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-left: 5px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+        /* أزرار الإجراءات والتحكم بالحظر */
+        .action-btn { padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; margin-left: 4px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
         .btn-danger { background: #f43f5e; color: white; }
         .btn-danger:hover { background: #e11d48; }
-        .btn-info { background: var(--primary-color); color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-warning:hover { background: #d97706; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; }
         
         .loading-text { text-align: center; color: var(--text-muted); padding: 40px; font-weight: 600; }
     </style>
@@ -90,7 +93,7 @@
     <div class="top-bar">
         <h2><i class="fa-solid fa-shield-halved"></i> لوحة الإدارة والتحكم الذكية</h2>
         <div class="top-actions">
-            <button class="btn" onclick="loadAdminData()" style="background: #10b981;"><i class="fa-solid fa-rotate"></i> تحديث البيانات</button>
+            <button class="btn" onclick="loadAdminData()" style="background: #10b981;"><i class="fa-solid fa-rotate"></i> تحديث</button>
             <button class="theme-toggle" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i> الوضع</button>
             <a href="index.html" class="btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
         </div>
@@ -113,10 +116,10 @@
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat-icon" style="color: #f43f5e; background: rgba(244, 63, 94, 0.15);"><i class="fa-solid fa-user-slash"></i></div>
             <div class="stat-info">
-                <h3 id="totalVisits">--</h3>
-                <p>إجمالي زيارات المنصة</p>
+                <h3 id="bannedCount" style="color: #f43f5e;">0</h3>
+                <p>الطلاب المحظورون</p>
             </div>
         </div>
         <div class="stat-card">
@@ -128,10 +131,10 @@
         </div>
     </div>
 
-    <!-- قسم إدارة الطلاب المتقدم -->
+    <!-- قسم إدارة الطلاب -->
     <div class="section-box">
         <div class="section-header">
-            <h3><i class="fa-solid fa-user-graduate"></i> متابعة حضور ودرجات الطلاب المسجلين سحابياً</h3>
+            <h3><i class="fa-solid fa-user-graduate"></i> متابعة الطلاب، نسبة المحاضرات، وحظر الحسابات</h3>
         </div>
         
         <div class="controls-wrapper">
@@ -145,25 +148,19 @@
                         <th>اسم الطالب ورقم الهاتف</th>
                         <th>رقم ولي الأمر</th>
                         <th>الفرقة الدراسية</th>
-                        <th>وقت التسجيل / الدخول</th>
-                        <th>الحالة وما راكمه</th>
                         <th>نسبة المحاضرات (%)</th>
-                        <th>الإجراءات</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات (حظر / فك الحظر / حذف)</th>
                     </tr>
                 </thead>
                 <tbody id="studentsTableBody">
-                    <tr><td colspan="7" class="loading-text">جاري جلب بيانات الطلاب من السحابة...</td></tr>
+                    <tr><td colspan="6" class="loading-text">جاري جلب بيانات الطلاب...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // رابط جوجل شيت (Google Apps Script Web App URL)
-        // سيتم ربطه هنا ليجلب البيانات الحية فوراً من أي جهاز يسجل منه الطلاب
-        const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"; 
-
-        // تبديل الثيم
         function toggleTheme() {
             const body = document.getElementById("pageBody");
             body.classList.toggle("light-mode");
@@ -177,32 +174,18 @@
             loadAdminData();
         });
 
-        // تحميل البيانات من السحابة أو التخزين المشترك
-        async function loadAdminData() {
+        function loadAdminData() {
             let tbody = document.getElementById("studentsTableBody");
-            tbody.innerHTML = `<tr><td colspan="7" class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحديث البيانات...</td></tr>`;
-
-            let students = [];
-
-            try {
-                // إذا تم ربط الرابط الخاص بـ Google Sheets سيجلب البيانات الحقيقية من الموبايلات الأخرى
-                if (WEB_APP_URL && WEB_APP_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-                    let response = await fetch(WEB_APP_URL);
-                    students = await response.json();
-                } else {
-                    // كوضع احتياطي مؤقت، يقرأ من الـ localStorage المشترك أو يدمج مع بيانات محلية
-                    students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-                }
-            } catch (error) {
-                console.log("خطأ في الاتصال بالسحابة، يتم الاعتماد على التخزين المحلي:", error);
-                students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            }
-
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            
             document.getElementById("totalStudents").innerText = students.length;
+            let bannedCount = students.filter(st => st.isBanned).length;
+            document.getElementById("bannedCount").innerText = bannedCount;
+
             tbody.innerHTML = "";
 
             if (students.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding: 40px; font-weight: 600;">لا يوجد طلاب مسجلين حالياً - في انتظار تسجيل أول طالب...</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding: 40px; font-weight: 600;">لا يوجد طلاب مسجلين حالياً...</td></tr>`;
                 return;
             }
 
@@ -210,7 +193,15 @@
                 let total = st.totalLectures || 10;
                 let watched = st.watchedLectures || 0;
                 let percentage = Math.round((watched / total) * 100);
-                let remaining = total - watched;
+
+                // تحديد شكل وأيقونة زر الحظر / فك الحظر
+                let isBanned = st.isBanned === true;
+                let statusBadge = isBanned 
+                    ? `<span style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-ban"></i> محظور</span>` 
+                    : `<span style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-circle-check"></i> مفعل</span>`;
+
+                let banBtnText = isBanned ? `<i class="fa-solid fa-user-check"></i> فك الحظر` : `<i class="fa-solid fa-ban"></i> حظر`;
+                let banBtnClass = isBanned ? `btn-success` : `btn-warning`;
 
                 tbody.innerHTML += `
                     <tr>
@@ -221,25 +212,33 @@
                         <td>📞 ${st.parentPhone || 'غير مسجل'}</td>
                         <td>🎓 ${st.grade || 'غير محدد'}</td>
                         <td>
-                            <span style="font-size: 11px;">📥 ${st.timestamp || st.lastLogin || 'الآن'}</span>
-                        </td>
-                        <td>
-                            <span style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> مراكم ${remaining} دروس</span><br>
-                            <span style="font-size: 11px; color: var(--text-muted);">شاهد (${watched}/${total})</span>
-                        </td>
-                        <td>
                             <span style="font-weight: bold; color: var(--primary-color);">${percentage}%</span>
                             <div class="progress-container">
                                 <div class="progress-bar" style="width: ${percentage}%;"></div>
                             </div>
                         </td>
+                        <td>${statusBadge}</td>
                         <td>
-                            <button class="action-btn btn-info" onclick="viewDetails(${index})"><i class="fa-solid fa-eye"></i> تفاصيل</button>
-                            <button class="action-btn btn-danger" onclick="deleteStudent(${index})"><i class="fa-solid fa-trash"></i></button>
+                            <button class="action-btn ${banBtnClass}" onclick="toggleBan(${index})" title="${isBanned ? 'فك الحظر عن الطالب' : 'حظر الطالب'}">${banBtnText}</button>
+                            <button class="action-btn btn-danger" onclick="deleteStudent(${index})" title="حذف الطالب نهائياً"><i class="fa-solid fa-trash"></i> حذف</button>
                         </td>
                     </tr>
                 `;
             });
+        }
+
+        // دالة حظر أو فك حظر الطالب بضغط زر
+        function toggleBan(index) {
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            
+            // عكس حالة الحظر
+            students[index].isBanned = !students[index].isBanned;
+            
+            // حفظ التحديثات
+            localStorage.setItem("platformStudents", JSON.stringify(students));
+            
+            // تحديث الجدول والإحصائيات فوراً
+            loadAdminData();
         }
 
         // البحث الفوري
@@ -253,10 +252,7 @@
             }
         }
 
-        function viewDetails(index) {
-            alert("فتح نافذة التقرير الأكاديمي الشامل للطالب.");
-        }
-
+        // دالة حذف الطالب
         function deleteStudent(index) {
             if(confirm("هل أنت متأكد من حذف هذا الطالب نهائياً؟")) {
                 let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
