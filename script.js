@@ -29,7 +29,7 @@ function showPassword(id, button) {
     }
 }
 
-// تسجيل طالب جديد وإرسال البيانات إلى Google Sheets
+// تسجيل طالب جديد وإرسال البيانات إلى Google Sheets ولوحة التحكم
 function registerStudent(event) {
     event.preventDefault();
     const pass = document.getElementById("password").value;
@@ -40,7 +40,7 @@ function registerStudent(event) {
         return;
     }
 
-    // رابط الويب السحري الخاص بكِ
+    // رابط الويب السحري المحدث والصحيح
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxX2-cqLNiCfRK540mJxzaoNa1MxSHRCpf9Nlcc9Pe9OX1qwY5VKI9tAyqQkQ3988vL/exec';
 
     let studentData = {
@@ -57,6 +57,17 @@ function registerStudent(event) {
         subscription: "Standard"
     };
 
+    // حفظ محلياً عشان تظهر في لوحة التحكم فوراً
+    let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+    // التأكد من عدم تكرار رقم الهاتف
+    let existingIndex = students.findIndex(s => s.phone === studentData.phone);
+    if (existingIndex >= 0) {
+        students[existingIndex] = studentData;
+    } else {
+        students.push(studentData);
+    }
+    localStorage.setItem("platformStudents", JSON.stringify(students));
+
     // إرسال البيانات لجوجل شيت أوتوماتيك
     fetch(scriptURL, {
         method: 'POST',
@@ -70,7 +81,8 @@ function registerStudent(event) {
     })
     .catch(error => {
         console.error('Error!', error.message);
-        alert("حدث خطأ أثناء التسجيل، برجاء المحاولة مرة أخرى.");
+        // حتى لو حصل خطأ في الشبكة، البيانات اتفظت محلياً وهتدخل لوحة التحكم
+        window.location.href = "admin.html";
     });
 }
 

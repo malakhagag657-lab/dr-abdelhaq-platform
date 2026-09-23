@@ -134,11 +134,11 @@
     <!-- قسم إدارة الطلاب -->
     <div class="section-box">
         <div class="section-header">
-            <h3><i class="fa-solid fa-user-graduate"></i> متابعة الطلاب، نسبة المحاضرات، وحظر الحسابات</h3>
+            <h3><i class="fa-solid fa-user-graduate"></i> متابعة الطلاب، البريد، الكلمات، المحاضرات، والامتحانات</h3>
         </div>
         
         <div class="controls-wrapper">
-            <input type="text" id="searchStudent" class="search-box" placeholder="🔍 ابحث باسم الطالب، رقم الهاتف، أو الفرقة الدراسية..." onkeyup="filterStudents()">
+            <input type="text" id="searchStudent" class="search-box" placeholder="🔍 ابحث باسم الطالب، رقم الهاتف، البريد، أو الفرقة الدراسية..." onkeyup="filterStudents()">
         </div>
         
         <div class="table-responsive">
@@ -146,15 +146,17 @@
                 <thead>
                     <tr>
                         <th>اسم الطالب ورقم الهاتف</th>
+                        <th>البريد الإلكتروني وكلمة المرور</th>
                         <th>رقم ولي الأمر</th>
                         <th>الفرقة الدراسية</th>
-                        <th>نسبة المحاضرات (%)</th>
+                        <th>المحاضرات ومشاهدتها (%)</th>
+                        <th>متابعة الامتحانات</th>
                         <th>الحالة</th>
-                        <th>الإجراءات (حظر / فك الحظر / حذف)</th>
+                        <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="studentsTableBody">
-                    <tr><td colspan="6" class="loading-text">جاري جلب بيانات الطلاب...</td></tr>
+                    <tr><td colspan="8" class="loading-text">جاري جلب بيانات الطلاب...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -177,7 +179,7 @@
         function loadAdminData() {
             let tbody = document.getElementById("studentsTableBody");
             
-            // قراءة البيانات من التخزين (بأكثر من اسم محتمل لضمان جلبها مهما كان اسم المفتاح في التسجيل)
+            // قراءة البيانات المحدثة من الـ LocalStorage
             let students = JSON.parse(localStorage.getItem("platformStudents")) || 
                            JSON.parse(localStorage.getItem("students")) || 
                            JSON.parse(localStorage.getItem("users")) || [];
@@ -189,16 +191,15 @@
             tbody.innerHTML = "";
 
             if (students.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding: 40px; font-weight: 600;">لا يوجد طلاب مسجلين حالياً...</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding: 40px; font-weight: 600;">لا يوجد طلاب مسجلين حالياً...</td></tr>`;
                 return;
             }
 
             students.forEach((st, index) => {
-                let total = st.totalLectures || 10;
-                let watched = st.watchedLectures || 0;
+                let total = st.total || st.totalLectures || 10;
+                let watched = st.watched || st.watchedLectures || 0;
                 let percentage = Math.round((watched / total) * 100);
 
-                // قراءة مرنة لبيانات الطالب لتتطابق مع أي طريقة حفظ في صفحة التسجيل
                 let studentName = (st.firstName || st.lastName) 
                     ? `${st.firstName || ''} ${st.lastName || ''}`.trim() 
                     : (st.name || st.username || 'طالب جديد');
@@ -206,8 +207,10 @@
                 let phoneNum = st.phone || st.userPhone || st.phoneNumber || '-';
                 let parentNum = st.parentPhone || st.parentPhoneNum || 'غير مسجل';
                 let gradeName = st.grade || st.academicYear || 'غير محدد';
+                let emailVal = st.email || 'غير مسجل';
+                let passVal = st.password || '******';
+                let examStatus = st.examStatus || st.exam || 'لم يجتز / لم يبدأ';
 
-                // تحديد شكل وأيقونة زر الحظر / فك الحظر
                 let isBanned = st.isBanned === true;
                 let statusBadge = isBanned 
                     ? `<span style="color: #f43f5e; font-weight: bold;"><i class="fa-solid fa-ban"></i> محظور</span>` 
@@ -222,14 +225,19 @@
                             <strong><i class="fa-solid fa-user" style="color:var(--primary-color); margin-left:5px;"></i> ${studentName}</strong><br>
                             <span style="font-size: 11px; color: var(--text-muted);">📱 ${phoneNum}</span>
                         </td>
+                        <td>
+                            <span style="font-size: 12px;"><i class="fa-solid fa-envelope" style="color:var(--primary-color);"></i> ${emailVal}</span><br>
+                            <span style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-key"></i> الباسورد: ${passVal}</span>
+                        </td>
                         <td>📞 ${parentNum}</td>
                         <td>🎓 ${gradeName}</td>
                         <td>
-                            <span style="font-weight: bold; color: var(--primary-color);">${percentage}%</span>
+                            <span style="font-weight: bold; color: var(--primary-color);">${watched} / ${total} (${percentage}%)</span>
                             <div class="progress-container">
                                 <div class="progress-bar" style="width: ${percentage}%;"></div>
                             </div>
                         </td>
+                        <td><span style="font-weight: 600; color: var(--text-muted);"><i class="fa-solid fa-clipboard-question"></i> ${examStatus}</span></td>
                         <td>${statusBadge}</td>
                         <td>
                             <button class="action-btn ${banBtnClass}" onclick="toggleBan(${index})" title="${isBanned ? 'فك الحظر عن الطالب' : 'حظر الطالب'}">${banBtnText}</button>
@@ -240,7 +248,7 @@
             });
         }
 
-        // دالة حظر أو فك حظر الطالب بضغط زر
+        // دالة حظر أو فك حظر الطالب
         function toggleBan(index) {
             let students = JSON.parse(localStorage.getItem("platformStudents")) || 
                            JSON.parse(localStorage.getItem("students")) || [];
