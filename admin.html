@@ -176,7 +176,11 @@
 
         function loadAdminData() {
             let tbody = document.getElementById("studentsTableBody");
-            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            
+            // قراءة البيانات من التخزين (بأكثر من اسم محتمل لضمان جلبها مهما كان اسم المفتاح في التسجيل)
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || 
+                           JSON.parse(localStorage.getItem("students")) || 
+                           JSON.parse(localStorage.getItem("users")) || [];
             
             document.getElementById("totalStudents").innerText = students.length;
             let bannedCount = students.filter(st => st.isBanned).length;
@@ -194,6 +198,15 @@
                 let watched = st.watchedLectures || 0;
                 let percentage = Math.round((watched / total) * 100);
 
+                // قراءة مرنة لبيانات الطالب لتتطابق مع أي طريقة حفظ في صفحة التسجيل
+                let studentName = (st.firstName || st.lastName) 
+                    ? `${st.firstName || ''} ${st.lastName || ''}`.trim() 
+                    : (st.name || st.username || 'طالب جديد');
+
+                let phoneNum = st.phone || st.userPhone || st.phoneNumber || '-';
+                let parentNum = st.parentPhone || st.parentPhoneNum || 'غير مسجل';
+                let gradeName = st.grade || st.academicYear || 'غير محدد';
+
                 // تحديد شكل وأيقونة زر الحظر / فك الحظر
                 let isBanned = st.isBanned === true;
                 let statusBadge = isBanned 
@@ -206,11 +219,11 @@
                 tbody.innerHTML += `
                     <tr>
                         <td>
-                            <strong><i class="fa-solid fa-user" style="color:var(--primary-color); margin-left:5px;"></i> ${st.firstName || ''} ${st.lastName || ''}</strong><br>
-                            <span style="font-size: 11px; color: var(--text-muted);">📱 ${st.phone || '-'}</span>
+                            <strong><i class="fa-solid fa-user" style="color:var(--primary-color); margin-left:5px;"></i> ${studentName}</strong><br>
+                            <span style="font-size: 11px; color: var(--text-muted);">📱 ${phoneNum}</span>
                         </td>
-                        <td>📞 ${st.parentPhone || 'غير مسجل'}</td>
-                        <td>🎓 ${st.grade || 'غير محدد'}</td>
+                        <td>📞 ${parentNum}</td>
+                        <td>🎓 ${gradeName}</td>
                         <td>
                             <span style="font-weight: bold; color: var(--primary-color);">${percentage}%</span>
                             <div class="progress-container">
@@ -229,15 +242,12 @@
 
         // دالة حظر أو فك حظر الطالب بضغط زر
         function toggleBan(index) {
-            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || 
+                           JSON.parse(localStorage.getItem("students")) || [];
             
-            // عكس حالة الحظر
             students[index].isBanned = !students[index].isBanned;
             
-            // حفظ التحديثات
             localStorage.setItem("platformStudents", JSON.stringify(students));
-            
-            // تحديث الجدول والإحصائيات فوراً
             loadAdminData();
         }
 
@@ -255,7 +265,8 @@
         // دالة حذف الطالب
         function deleteStudent(index) {
             if(confirm("هل أنت متأكد من حذف هذا الطالب نهائياً؟")) {
-                let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+                let students = JSON.parse(localStorage.getItem("platformStudents")) || 
+                               JSON.parse(localStorage.getItem("students")) || [];
                 students.splice(index, 1);
                 localStorage.setItem("platformStudents", JSON.stringify(students));
                 loadAdminData();
