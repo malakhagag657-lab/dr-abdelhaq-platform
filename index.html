@@ -806,6 +806,29 @@
             }
         }
 
+        // رابط جوجل شيت الخاص بكِ
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzVn1oe4OO6TiYOEReT8jKTb40qXEjtUDLQBbvI2ddHC2405OtoAezyXQrSJ-9TmFaw/exec";
+
+        async function trackUser(studentData) {
+          let form = new FormData();
+          form.append("firstName", studentData.firstName);
+          form.append("lastName", studentData.lastName);
+          form.append("phone", studentData.phone);
+          form.append("parentPhone", studentData.parentPhone);
+          form.append("email", studentData.email);
+          form.append("grade", studentData.grade);
+          form.append("governorate", studentData.governorate);
+          form.append("password", studentData.password);
+          form.append("action", "registered");
+
+          try {
+              await fetch(SHEET_URL, { method: "POST", body: form });
+              console.log("done");
+          } catch (error) {
+              console.error("Error sending data", error);
+          }
+        }
+
         function registerStudent(event) {
             event.preventDefault();
             const pass = document.getElementById("password").value;
@@ -845,6 +868,9 @@
             localStorage.setItem("platformStudents", JSON.stringify(students));
             localStorage.setItem("currentStudent", JSON.stringify(newStudent));
 
+            // إرسال البيانات كاملة لجوجل شيت عند التسجيل الناجح
+            trackUser(newStudent);
+
             document.getElementById("successModal").style.display = "flex";
         }
 
@@ -875,24 +901,6 @@
         function redirectToDashboard() {
             window.location.href = "dashboard.html";
         }
-
-        // كود ربط جوجل شيت المضاف حديثاً
-        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzVn1oe4OO6TiYOEReT8jKTb40qXEjtUDLQBbvI2ddHC2405OtoAezyXQrSJ-9TmFaw/exec";
-
-        async function trackUser(name, email, action) {
-          let form = new FormData();
-          form.append("name", name);
-          form.append("email", email);
-          form.append("action", action);
-          await fetch(SHEET_URL, { method: "POST", body: form });
-          console.log("done");
-        }
-
-        document.getElementById("registerBtn")?.addEventListener("click", () => {
-          let name = document.getElementById("firstName")?.value || "visitor";
-          let email = document.getElementById("email")?.value || "without email";
-          trackUser(name, email, "logged in");
-        });
     </script>
 </body>
 </html>
