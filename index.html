@@ -102,7 +102,6 @@
             border-color: var(--primary);
         }
 
-        /* الحاوية الكبرى تأخذ عرض الشاشة بالكامل وتقسمها بالنصف تماماً (50% لكل قسم) */
         .container {
             width: 100%;
             max-width: 100%;
@@ -300,7 +299,6 @@
             font-size: 13px;
         }
 
-        /* نافذة النجاح المنبثقة */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -369,7 +367,6 @@
             background: #0369a1;
         }
 
-        /* الهيدر العلوي للموقع */
         .top-navbar {
             width: 92%;
             max-width: 1350px;
@@ -548,7 +545,6 @@
             transform: translateY(-2px);
         }
 
-        /* 📱 تخصيصات وتعديلات الموبايل الاحترافية (Mobile Responsive) */
         @media (max-width: 900px) {
             .container {
                 flex-direction: column-reverse;
@@ -640,241 +636,8 @@
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
     <button class="admin-secret-btn" onclick="openAdminDashboard()" title="دخول لوحة التحكم">⚙️</button>
 
-    <!-- نافذة منبثقة للنجاح -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-box">
             <div class="modal-icon">✓</div>
             <h3>تم انشاء حسابك و تسجيل الدخول بنجاح !</h3>
-            <p style="color: var(--muted); font-size: 12px;">اضغط حسناً للاستمرار</p>
-            <button class="modal-btn" onclick="redirectToDashboard()">حسناً</button>
-        </div>
-    </div>
-
-    <div id="landingView">
-        <div class="top-navbar">
-            <div class="nav-logo-group">
-                🎓 <span> د. عبد الحق العليدي </span>
-            </div>
-            <div class="nav-buttons-group">
-                <button class="nav-btn nav-btn-primary" onclick="showRegisterForm()">حساب جديد</button>
-                <button class="nav-btn nav-btn-outline" onclick="showLoginForm()">تسجيل الدخول</button>
-            </div>
-        </div>
-
-        <div class="features-section">
-            <h2 class="features-title">ليه تشترك معانا؟</h2>
-            <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon">💡</div><div class="feature-text">شرح مبسط ومفهوم</div></div>
-                <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-text">فيديوهات بروسومات توضيحية</div></div>
-                <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-text">تمارين تفاعلية على الدروس</div></div>
-                <div class="feature-card"><div class="feature-icon">🛡️</div><div class="feature-text">مرونة كاملة في المذاكرة</div></div>
-                <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-text">اختبارات مستمرة</div></div>
-                <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-text">محتوى متكامل ومنظم</div></div>
-                <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-text">تحديث مستمر حسب المنهج</div></div>
-                <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-text">مجتمع طلابي ضخم</div></div>
-            </div>
-        </div>
-
-        <div class="footer-showcase">
-            <div class="ai-assistant-badge">
-                <div class="widget-icon-box">🤖</div>
-                <div class="ai-info">
-                    <h4>نظام المساعد الذكي (AI)</h4>
-                    <p>مساعدتك الدراسية متاحة على مدار الساعة</p>
-                </div>
-            </div>
-
-            <div class="social-icons-group">
-                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 18px;"></i> واتساب المنصة</a>
-                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn"><i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 18px;"></i> صفحة الفيسبوك</a>
-                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn"><i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 18px;"></i> تليجرام الشرعية</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container" id="formsContainer">
-        <!-- 1. نموذج إنشاء حساب -->
-        <div class="card" id="registerCard">
-            <div class="header">
-                <div class="logo">🎓</div>
-                <h1>د. عبد الحق العليدي</h1>
-                <p>إنشاء حساب طالب جديد</p>
-            </div>
-
-            <form id="registerForm" onsubmit="registerStudent(event)">
-                <div class="section-title">بيانات الطالب</div>
-                <div class="form-grid">
-                    <div class="field"><label>الاسم الأول <span class="required">*</span></label><input type="text" id="firstName" required></div>
-                    <div class="field"><label>الاسم الأخير <span class="required">*</span></label><input type="text" id="lastName" required></div>
-                    <div class="field"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="studentPhone" maxlength="11" required></div>
-                    <div class="field"><label>رقم هاتف ولي الأمر <span class="required">*</span></label><input type="tel" id="parentPhone" maxlength="11" required></div>
-                    <div class="field full"><label>البريد الإلكتروني <span class="required">*</span></label><input type="email" id="email" required></div>
-                    <div class="field"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="password" minlength="6" required><button type="button" class="show-password" onclick="showPassword('password', this)">👁️</button></div></div>
-                    <div class="field"><label>تأكيد كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="confirmPassword" minlength="6" required><button type="button" class="show-password" onclick="showPassword('confirmPassword', this)">👁️</button></div></div>
-                </div>
-
-                <div class="section-title">البيانات الدراسية</div>
-                <div class="form-grid">
-                    <div class="field">
-                        <label>اختر الصف الدراسي <span class="required">*</span></label>
-                        <select id="grade" required>
-                            <option value="">اختر الصف الدراسي</option>
-                            <option value="الفرقة الأولى">الفرقة الأولى</option>
-                            <option value="الفرقة الثانية">الفرقة الثانية</option>
-                            <option value="الفرقة الثالثة">الفرقة الثالثة</option>
-                            <option value="الفرقة الرابعة">الفرقة الرابعة</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>اختر المحافظة <span class="required">*</span></label>
-                        <select id="governorate" required>
-                            <option value="">اختر المحافظة</option>
-                            <option>بورسعيد</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-btn">إنشاء الحساب</button>
-                <div class="error-message" id="registerErrorMessage"></div>
-                <div class="login">لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a></div>
-            </form>
-        </div>
-
-        <!-- 2. نموذج تسجيل الدخول -->
-        <div class="card" id="loginCard" style="display: none;">
-            <div class="header">
-                <div class="logo">🎓</div>
-                <h1>تسجيل الدخول</h1>
-                <p>أدخل رقم الهاتف وكلمة السر للمتابعة</p>
-            </div>
-
-            <form onsubmit="loginStudent(event)">
-                <div class="form-grid">
-                    <div class="field full"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="loginPhone" maxlength="11" required></div>
-                    <div class="field full"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="loginPassword" required><button type="button" class="show-password" onclick="showPassword('loginPassword', this)">👁️</button></div></div>
-                </div>
-
-                <button type="submit" class="submit-btn">دخول المنصة</button>
-                <div class="error-message" id="loginErrorMessage"></div>
-                <div class="login">ليس لديك حساب؟ <a onclick="showRegisterForm()">حساب جديد</a></div>
-            </form>
-        </div>
-
-        <div class="side-image">
-            <img src="doctor.png" alt="د. عبد الحق">
-        </div>
-    </div>
-
-    <script>
-        function showRegisterForm() {
-            document.getElementById("landingView").style.display = "none";
-            document.getElementById("formsContainer").style.display = "flex";
-            document.getElementById("registerCard").style.display = "block";
-            document.getElementById("loginCard").style.display = "none";
-        }
-
-        function showLoginForm() {
-            document.getElementById("landingView").style.display = "none";
-            document.getElementById("formsContainer").style.display = "flex";
-            document.getElementById("registerCard").style.display = "none";
-            document.getElementById("loginCard").style.display = "block";
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle("dark");
-            const btn = document.getElementById("themeBtn");
-            btn.innerHTML = document.body.classList.contains("dark") ? "☀️" : "🌙";
-        }
-
-        function showPassword(id, btn) {
-            const input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-                btn.innerHTML = "🙈";
-            } else {
-                input.type = "password";
-                btn.innerHTML = "👁️";
-            }
-        }
-
-        function openAdminDashboard() {
-            const pass = prompt("أدخل كلمة سر لوحة التحكم:");
-            if (pass === "admin123") {
-                window.location.href = "admin.html";
-            } else if (pass !== null) {
-                alert("كلمة السر غير صحيحة!");
-            }
-        }
-
-        function registerStudent(event) {
-            event.preventDefault();
-            const pass = document.getElementById("password").value;
-            const confirmPass = document.getElementById("confirmPassword").value;
-            const phone = document.getElementById("studentPhone").value;
-            const email = document.getElementById("email").value;
-            const errorDiv = document.getElementById("registerErrorMessage");
-            errorDiv.style.display = "none";
-
-            if (pass !== confirmPass) {
-                errorDiv.innerText = "كلمة السر وتأكيد كلمة السر غير متطابقين";
-                errorDiv.style.display = "block";
-                return;
-            }
-
-            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            if (students.find(s => s.phone === phone || s.email === email)) {
-                errorDiv.innerText = "هذا الرقم أو البريد الإلكتروني مسجل بالفعل!";
-                errorDiv.style.display = "block";
-                return;
-            }
-
-            const newStudent = {
-                firstName: document.getElementById("firstName").value,
-                lastName: document.getElementById("lastName").value,
-                phone: phone,
-                email: email,
-                parentPhone: document.getElementById("parentPhone").value,
-                grade: document.getElementById("grade").value,
-                governorate: document.getElementById("governorate").value,
-                password: pass,
-                totalLectures: 0,
-                watchedLectures: 0
-            };
-
-            students.push(newStudent);
-            localStorage.setItem("platformStudents", JSON.stringify(students));
-            localStorage.setItem("currentStudent", JSON.stringify(newStudent));
-
-            document.getElementById("successModal").style.display = "flex";
-        }
-
-        function loginStudent(event) {
-            event.preventDefault();
-            const phone = document.getElementById("loginPhone").value;
-            const pass = document.getElementById("loginPassword").value;
-            const errorDiv = document.getElementById("loginErrorMessage");
-            errorDiv.style.display = "none";
-
-            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
-            let student = students.find(s => s.phone === phone);
-
-            if (student) {
-                if (student.password && student.password !== pass) {
-                    errorDiv.innerText = "كلمة السر غير صحيحة!";
-                    errorDiv.style.display = "block";
-                    return;
-                }
-                localStorage.setItem("currentStudent", JSON.stringify(student));
-                document.getElementById("successModal").style.display = "flex";
-            } else {
-                errorDiv.innerText = "هذا الرقم غير مسجل، يرجى إنشاء حساب جديد!";
-                errorDiv.style.display = "block";
-            }
-        }
-
-        function redirectToDashboard() {
-            window.location.href = "dashboard.html";
-        }
-    </script>
-</body>
-</html>
+            <p style="color: var(--muted); font-size: 12px;">اضغط
