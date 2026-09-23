@@ -734,7 +734,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">إنشاء الحساب</button>
+                <button type="submit" id="registerBtn" class="submit-btn">إنشاء الحساب</button>
                 <div class="error-message" id="registerErrorMessage"></div>
                 <div class="login">لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a></div>
             </form>
@@ -875,6 +875,24 @@
         function redirectToDashboard() {
             window.location.href = "dashboard.html";
         }
+
+        // كود ربط جوجل شيت المضاف حديثاً
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzVn1oe4OO6TiYOEReT8jKTb40qXEjtUDLQBbvI2ddHC2405OtoAezyXQrSJ-9TmFaw/exec";
+
+        async function trackUser(name, email, action) {
+          let form = new FormData();
+          form.append("name", name);
+          form.append("email", email);
+          form.append("action", action);
+          await fetch(SHEET_URL, { method: "POST", body: form });
+          console.log("done");
+        }
+
+        document.getElementById("registerBtn")?.addEventListener("click", () => {
+          let name = document.getElementById("firstName")?.value || "visitor";
+          let email = document.getElementById("email")?.value || "without email";
+          trackUser(name, email, "logged in");
+        });
     </script>
 </body>
 </html>
