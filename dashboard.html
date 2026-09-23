@@ -1,825 +1,906 @@
-<!DOCTYPE html>  <html lang="ar" dir="rtl">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>لوحة التحكم - منصة د. عبد الحق العليدي</title>  <!-- خط Cairo الاحترافي -->  
-<link rel="preconnect" href="https://fonts.googleapis.com">  
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">  
-
-<style>  
-    * {  
-        box-sizing: border-box;  
-        margin: 0;  
-        padding: 0;  
-        font-family: 'Cairo', sans-serif;  
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;  
-    }  
-
-    :root {  
-        --bg-main: #f0f7ff;  
-        --sidebar-bg: #ffffff;  
-        --card-bg: rgba(255, 255, 255, 0.85);  
-        --card-border: rgba(56, 189, 248, 0.25);  
-        --primary: #0ea5e9;  
-        --primary-gradient: linear-gradient(135deg, #0ea5e9, #3b82f6);  
-        --secondary-gradient: linear-gradient(135deg, #38bdf8, #818cf8);  
-        --success-gradient: linear-gradient(135deg, #10b981, #059669);  
-        --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);  
-        --text-title: #0f172a;  
-        --text-muted: #64748b;  
-        --accent-glow: rgba(14, 165, 233, 0.25);  
-        --sidebar-border: rgba(226, 232, 240, 0.8);  
-        --badge-bg: rgba(255, 255, 255, 0.85);  
-        --badge-color: #0f172a;  
-    }  
-
-    [data-theme="dark"] {  
-        --bg-main: #0a061d;  
-        --sidebar-bg: #110a29;  
-        --card-bg: rgba(23, 15, 52, 0.75);  
-        --card-border: rgba(217, 70, 239, 0.25);  
-        --primary: #d946ef;  
-        --primary-gradient: linear-gradient(135deg, #d946ef, #8b5cf6);  
-        --secondary-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);  
-        --text-title: #ffffff;  
-        --text-muted: #b3a5d7;  
-        --accent-glow: rgba(217, 70, 239, 0.4);  
-        --sidebar-border: rgba(255, 255, 255, 0.1);  
-        --badge-bg: rgba(0, 0, 0, 0.6);  
-        --badge-color: #fff;  
-    }  
-
-    body {  
-        background-color: var(--bg-main);  
-        background-image:   
-            radial-gradient(circle at 15% 20%, var(--accent-glow), transparent 40%),  
-            radial-gradient(circle at 85% 80%, rgba(129, 140, 248, 0.1), transparent 40%);  
-        color: var(--text-title);  
-        min-height: 100vh;  
-        display: flex;  
-    }  
-
-    /* Sidebar القائمة الجانبية */  
-    .sidebar {  
-        width: 270px;  
-        background: var(--sidebar-bg);  
-        border-left: 1px solid var(--sidebar-border);  
-        display: flex;  
-        flex-direction: column;  
-        padding: 30px 20px;  
-        position: fixed;  
-        height: 100vh;  
-        z-index: 100;  
-        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.03);  
-    }  
-
-    .sidebar-logo {  
-        display: flex;  
-        align-items: center;  
-        gap: 12px;  
-        margin-bottom: 35px;  
-        padding-bottom: 20px;  
-        border-bottom: 1px solid var(--sidebar-border);  
-    }  
-
-    .sidebar-logo .icon {  
-        width: 45px;  
-        height: 45px;  
-        background: var(--primary-gradient);  
-        border-radius: 14px;  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        font-size: 22px;  
-        box-shadow: 0 4px 15px var(--accent-glow);  
-    }  
-
-    .sidebar-logo h2 {  
-        font-size: 18px;  
-        font-weight: 800;  
-        background: linear-gradient(135deg, var(--text-title), var(--primary));  
-        -webkit-background-clip: text;  
-        -webkit-text-fill-color: transparent;  
-    }  
-
-    .menu-list {  
-        list-style: none;  
-        display: flex;  
-        flex-direction: column;  
-        gap: 8px;  
-    }  
-
-    .menu-item a {  
-        display: flex;  
-        align-items: center;  
-        gap: 14px;  
-        padding: 12px 16px;  
-        color: var(--text-muted);  
-        text-decoration: none;  
-        font-weight: 600;  
-        font-size: 15px;  
-        border-radius: 12px;  
-        transition: all 0.3s ease;  
-        cursor: pointer;  
-    }  
-
-    .menu-item.active a, .menu-item a:hover {  
-        background: var(--primary-gradient);  
-        color: #ffffff;  
-        box-shadow: 0 5px 20px var(--accent-glow);  
-    }  
-
-    /* المحتوى الرئيسي */  
-    .main-content {  
-        margin-right: 270px;  
-        flex: 1;  
-        padding: 40px;  
-    }  
-
-    .top-header {  
-        display: flex;  
-        justify-content: space-between;  
-        align-items: center;  
-        margin-bottom: 30px;  
-    }  
-
-    .welcome-text h1 {  
-        font-size: 26px;  
-        font-weight: 800;  
-        color: var(--text-title);  
-    }  
-
-    .welcome-text p {  
-        color: var(--text-muted);  
-        font-size: 14px;  
-    }  
-
-    .header-actions {  
-        display: flex;  
-        align-items: center;  
-        gap: 15px;  
-    }  
-
-    /* زر التبديل بين الوضع الليلي والنهاري (اللمبة) */  
-    .theme-toggle-btn {  
-        width: 45px;  
-        height: 45px;  
-        border-radius: 50%;  
-        background: var(--card-bg);  
-        border: 1px solid var(--card-border);  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        cursor: pointer;  
-        font-size: 20px;  
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);  
-        transition: 0.3s;  
-    }  
-
-    .theme-toggle-btn:hover {  
-        transform: scale(1.08);  
-        border-color: var(--primary);  
-    }  
-
-    .user-profile {  
-        display: flex;  
-        align-items: center;  
-        gap: 12px;  
-        background: var(--card-bg);  
-        padding: 8px 18px;  
-        border-radius: 50px;  
-        border: 1px solid var(--card-border);  
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);  
-    }  
-
-    .avatar {  
-        width: 38px;  
-        height: 38px;  
-        border-radius: 50%;  
-        background: var(--primary-gradient);  
-        color: #fff;  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        font-weight: bold;  
-    }  
-
-    /* إدارة التبديل بين الأقسام */  
-    .tab-section {  
-        display: none;  
-        animation: fadeIn 0.4s ease;  
-    }  
-
-    .tab-section.active-tab {  
-        display: block;  
-    }  
-
-    @keyframes fadeIn {  
-        from { opacity: 0; transform: translateY(10px); }  
-        to { opacity: 1; transform: translateY(0); }  
-    }  
-
-    .section-header {  
-        margin-bottom: 20px;  
-        margin-top: 15px;  
-    }  
-
-    .section-header h2 {  
-        font-size: 22px;  
-        font-weight: 800;  
-        border-right: 4px solid var(--primary);  
-        padding-right: 12px;  
-        color: var(--text-title);  
-    }  
-
-    /* الشبكات العامة للكروت */  
-    .grid-layout {  
-        display: grid;  
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
-        gap: 25px;  
-    }  
-
-    .card-box {  
-        background: var(--card-bg);  
-        border: 1px solid var(--card-border);  
-        border-radius: 24px;  
-        overflow: hidden;  
-        backdrop-filter: blur(10px);  
-        transition: all 0.35s ease;  
-        display: flex;  
-        flex-direction: column;  
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);  
-    }  
-
-    .card-box:hover {  
-        transform: translateY(-5px);  
-        box-shadow: 0 15px 35px var(--accent-glow);  
-        border-color: var(--primary);  
-    }  
-
-    .card-banner {  
-        height: 140px;  
-        background: var(--secondary-gradient);  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        font-size: 45px;  
-        position: relative;  
-    }  
-
-    .badge {  
-        position: absolute;  
-        top: 15px;  
-        left: 15px;  
-        background: var(--badge-bg);  
-        backdrop-filter: blur(5px);  
-        padding: 5px 12px;  
-        border-radius: 20px;  
-        font-size: 12px;  
-        color: var(--badge-color);  
-        border: 1px solid var(--card-border);  
-        font-weight: 700;  
-    }  
-
-    .card-body {  
-        padding: 22px;  
-        display: flex;  
-        flex-direction: column;  
-        gap: 12px;  
-        flex: 1;  
-    }  
-
-    .card-title {  
-        font-size: 18px;  
-        font-weight: 700;  
-        color: var(--text-title);  
-    }  
-
-    .card-desc {  
-        color: var(--text-muted);  
-        font-size: 14px;  
-        line-height: 1.6;  
-    }  
-
-    .action-btn {  
-        width: 100%;  
-        padding: 12px;  
-        margin-top: auto;  
-        border: none;  
-        border-radius: 14px;  
-        background: var(--primary-gradient);  
-        color: #fff;  
-        font-size: 15px;  
-        font-weight: 700;  
-        cursor: pointer;  
-        transition: 0.3s;  
-        text-align: center;  
-        text-decoration: none;  
-        display: block;  
-        box-shadow: 0 4px 15px var(--accent-glow);  
-    }  
-
-    .action-btn:hover {  
-        opacity: 0.9;  
-        box-shadow: 0 6px 20px var(--accent-glow);  
-    }  
-
-    /* الصفحة الرئيسية والتصاميم التفاعلية */  
-    .hero-banner {  
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(59, 130, 246, 0.12));  
-        border: 1px solid var(--card-border);  
-        border-radius: 24px;  
-        padding: 30px;  
-        margin-bottom: 30px;  
-        display: flex;  
-        justify-content: space-between;  
-        align-items: center;  
-        position: relative;  
-        overflow: hidden;  
-        box-shadow: 0 10px 30px rgba(14, 165, 233, 0.05);  
-    }  
-
-    .hero-banner::after {  
-        content: '✨';  
-        position: absolute;  
-        left: 20px;  
-        bottom: 10px;  
-        font-size: 80px;  
-        opacity: 0.15;  
-    }  
-
-    .stats-grid {  
-        display: grid;  
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
-        gap: 20px;  
-        margin-bottom: 35px;  
-    }  
-
-    .stat-card {  
-        background: var(--card-bg);  
-        border: 1px solid var(--card-border);  
-        border-radius: 20px;  
-        padding: 20px;  
-        display: flex;  
-        align-items: center;  
-        gap: 15px;  
-        box-shadow: 0 8px 25px rgba(0,0,0,0.03);  
-    }  
-
-    .stat-icon {  
-        width: 50px;  
-        height: 50px;  
-        border-radius: 16px;  
-        background: var(--primary-gradient);  
-        display: flex;  
-        align-items: center;  
-        justify-content: center;  
-        font-size: 24px;  
-        box-shadow: 0 4px 15px var(--accent-glow);  
-    }  
-
-    .stat-num {  
-        font-size: 22px;  
-        font-weight: 800;  
-        color: var(--text-title);  
-    }  
-
-    .stat-label {  
-        color: var(--text-muted);  
-        font-size: 13px;  
-    }  
-
-    .quote-box {  
-        background: rgba(56, 189, 248, 0.08);  
-        border-right: 4px solid var(--primary);  
-        padding: 20px;  
-        border-radius: 16px;  
-        margin-bottom: 30px;  
-        border: 1px solid rgba(56, 189, 248, 0.15);  
-    }  
-
-    .live-badge {  
-        background: #ef4444;  
-        color: #fff;  
-        padding: 3px 10px;  
-        border-radius: 20px;  
-        font-size: 12px;  
-        animation: pulse 1.5s infinite;  
-    }  
-
-    @keyframes pulse {  
-        0% { opacity: 1; }  
-        50% { opacity: 0.4; }  
-        100% { opacity: 1; }  
-    }  
-
-    /* تنسيقات شريط التقدم */  
-    .progress-box {  
-        margin-top: 8px;  
-    }  
-    .progress-title {  
-        display: flex;  
-        justify-content: space-between;  
-        font-size: 13px;  
-        color: var(--text-muted);  
-        margin-bottom: 6px;  
-    }  
-    .progress-bar {  
-        width: 100%;  
-        height: 8px;  
-        background: rgba(14, 165, 233, 0.1);  
-        border-radius: 10px;  
-        overflow: hidden;  
-    }  
-    .progress-fill {  
-        height: 100%;  
-        background: var(--primary-gradient);  
-        border-radius: 10px;  
-    }  
-
-    /* صندوق الشحن والاشتراكات */  
-    .code-input-box {  
-        background: var(--card-bg);  
-        border: 1px solid var(--card-border);  
-        border-radius: 20px;  
-        padding: 25px;  
-        margin-bottom: 30px;  
-        display: flex;  
-        gap: 15px;  
-        align-items: center;  
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);  
-    }  
-
-    .code-input-box input {  
-        flex: 1;  
-        height: 50px;  
-        background: var(--sidebar-bg);  
-        border: 1px solid var(--card-border);  
-        border-radius: 12px;  
-        padding: 0 20px;  
-        color: var(--text-title);  
-        font-size: 16px;  
-        outline: none;  
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);  
-    }  
-
-    @media (max-width: 900px) {  
-        .sidebar { width: 80px; padding: 20px 10px; }  
-        .sidebar-logo h2, .menu-item span:last-child { display: none; }  
-        .main-content { margin-right: 80px; padding: 20px; }  
-        .hero-banner { flex-direction: column; align-items: flex-start; gap: 15px; }  
-        .code-input-box { flex-direction: column; }  
-    }  
-</style>
-
-</head>  
-<body>  <!-- Sidebar القائمة الجانبية -->  
-<aside class="sidebar">  
-    <div class="sidebar-logo">  
-        <div class="icon">🎓</div>  
-        <h2>د. عبد الحق العليدي</h2>  
-    </div>  
-
-    <ul class="menu-list">  
-        <li class="menu-item active" onclick="switchTab('homeTab', this)">  
-            <a><span>🏠</span><span>الرئيسية</span></a>  
-        </li>  
-        <li class="menu-item" onclick="switchTab('coursesTab', this)">  
-            <a><span>📚</span><span>كورساتي</span></a>  
-        </li>  
-        <li class="menu-item" onclick="switchTab('examsTab', this)">  
-            <a><span>📝</span><span>الامتحانات</span></a>  
-        </li>  
-        <li class="menu-item" onclick="switchTab('subscriptionsTab', this)">  
-            <a><span>💳</span><span>الاشتراكات والشيفرات</span></a>  
-        </li>  
-        <li class="menu-item" onclick="switchTab('supportTab', this)">  
-            <a><span>📞</span><span>الدعم الفني</span></a>  
-        </li>  
-        <li class="menu-item" style="margin-top: auto;">  
-            <a href="index.html" style="color: #f43f5e;"><span>🚪</span><span>تسجيل الخروج</span></a>  
-        </li>  
-    </ul>  
-</aside>  
-
-<!-- المحتوى الرئيسي Main Content -->  
-<main class="main-content">  
-
-    <!-- الهيدر العلوي -->  
-    <header class="top-header">  
-        <div class="welcome-text">  
-            <h1 id="studentWelcomeName">أهلاً بك 👋</h1>  
-            <p>قسم الشريعة الإسلامية وأصول الدين - المذهب الشافعي</p>  
-        </div>  
-
-        <div class="header-actions">  
-            <!-- زر تبديل الوضع الداكن والنهاري (اللمبة) -->  
-            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغيير المظهر (داكن / مضيء)">  
-                💡  
-            </button>  
-
-            <div class="user-profile">  
-                <div class="avatar" id="avatarInitial">ط</div>  
-                <div>  
-                    <div id="studentProfileName" style="font-weight: 700; font-size: 14px;">طالب</div>  
-                    <div id="studentGrade" style="font-size: 12px; color: var(--text-muted);">جاري التحميل...</div>  
-                </div>  
-            </div>  
-        </div>  
-    </header>  
-
-    <!-- ================= 1. قسم الرئيسية ================= -->  
-    <div id="homeTab" class="tab-section active-tab">  
-          
-        <!-- بنر ترحيبي تفاعلي -->  
-        <div class="hero-banner">  
-            <div>  
-                <span style="background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">🔥 استعد للامتحانات</span>  
-                <h2 style="font-size: 24px; font-weight: 800; margin-top: 10px; color: var(--text-title);">جدول محاضرات الفقه والميراث للأسبوع الحالي</h2>  
-                <p style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">تم رفع محاضرات جديدة في مادة الميراث الشامل وتخريج الحديث.</p>  
-            </div>  
-            <button class="action-btn" style="width: auto; padding: 12px 25px;" onclick="switchTab('coursesTab', document.querySelectorAll('.menu-item')[1])">ابدأ المذاكرة الان 🚀</button>  
-        </div>  
-
-        <!-- كروت الإحصائيات التفاعلية -->  
-        <div class="stats-grid">  
-            <div class="stat-card">  
-                <div class="stat-icon">📚</div>  
-                <div>  
-                    <div class="stat-num">4 كورسات</div>  
-                    <div class="stat-label">المواد المفعّلة لديك</div>  
-                </div>  
-            </div>  
-            <div class="stat-card">  
-                <div class="stat-icon">⏱️</div>  
-                <div>  
-                    <div class="stat-num">0 ساعة</div>  
-                    <div class="stat-label">إجمالي المشاهدات</div>  
-                </div>  
-            </div>  
-            <div class="stat-card">  
-                <div class="stat-icon">🎯</div>  
-                <div>  
-                    <div class="stat-num">0%</div>  
-                    <div class="stat-label">نسبة الإنجاز العامة</div>  
-                </div>  
-            </div>  
-            <div class="stat-card">  
-                <div class="stat-icon">🏆</div>  
-                <div>  
-                    <div class="stat-num">نشط</div>  
-                    <div class="stat-label">حالة الحساب</div>  
-                </div>  
-            </div>  
-        </div>  
-
-        <!-- نصيحة إيمانية وفقهية سريعة -->  
-        <div class="quote-box">  
-            <div style="font-weight: 700; color: var(--primary); margin-bottom: 5px;">💡 من أقوال الشافعي رحمه الله:</div>  
-            <div style="font-size: 15px; font-style: italic; color: var(--text-title);">"من تعلم القرآن عظمت قيمته، ومن تكلم في الفقه نما قدره، ومن كتب الحديث قويت حجته."</div>  
-        </div>  
-
-        <!-- قسم متابعة التعلم واللايف -->  
-        <div class="section-header"><h2>واصل التعلم من حيث توقفت</h2></div>  
-        <div class="grid-layout" style="margin-bottom: 35px;">  
-              
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">  
-                    ⚖️ <span class="badge">ابدأ الآن</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">الميراث: باب أصحاب الفروض (الزوج والزوجة)</div>  
-                    <div class="card-desc">المحاضرة 01 - شرح الحالات والشروط بالتفصيل التطبيقي.</div>  
-                    <div class="progress-box">  
-                        <div class="progress-title"><span>اكتمل منها</span><span>0%</span></div>  
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>  
-                    </div>  
-                    <button class="action-btn" onclick="alert('عذراً، يجب اشتراك الطالب أولاً بمادة علم الميراث لتشغيل الفيديو.')">مشاهدة الفيديو ▶️</button>  
-                </div>  
-            </div>  
-
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #10b981, #059669);">  
-                    🔴 <span class="live-badge">بث مباشر قريباً</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">لايف الإجابة على أسئلة الفقه الشافعي</div>  
-                    <div class="card-desc">جلسة تفاعلية مع الدكتور للإجابة على المسائل المستشكلة في العبادات.</div>  
-                    <div style="font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 10px;">الموعد: الخميس 8:00 مساءً</div>  
-                    <button class="action-btn" style="background: var(--warning-gradient); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);" onclick="alert('تم تفعيل التنبيه! سنرسل لك إشعاراً عند بدء البث المباشر.')">تفعيل التنبيه 🔔</button>  
-                </div>  
-            </div>  
-
-        </div>  
-
-    </div>  
-
-    <!-- ================= 2. قسم كورساتي ================= -->  
-    <div id="coursesTab" class="tab-section">  
-        <div class="section-header"><h2>الكورسات الدراسية المتاحة</h2></div>  
-        <div class="grid-layout">  
-
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">  
-                    ⚖️ <span class="badge">أزهري</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">كورس علم الميراث (الفروض والتركات)</div>  
-                    <div class="card-desc">شرح تأصيلي لعلم الفرائض، أصحاب الفروض، العصبات، والحجب بطريقة مبسطة ورسومات توضيحية.</div>  
-                    <div class="progress-box">  
-                        <div class="progress-title"><span>نسبة إنجاز الكورس</span><span>0%</span></div>  
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>  
-                    </div>  
-                    <button class="action-btn" onclick="alert('غير مشترك، يرجى تفعيل الكود أولاً.')">مشاهدة المحاضرات ➔</button>  
-                </div>  
-            </div>  
-
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #10b981, #059669);">  
-                    📜 <span class="badge">أزهري</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">كورس علوم الحديث والتخريج</div>  
-                    <div class="card-desc">دراسة مصطلح الحديث، الحديث الصحيح والحسن والضعيف، وقواعد الجرح والتعديل.</div>  
-                    <div class="progress-box">  
-                        <div class="progress-title"><span>نسبة إنجاز الكورس</span><span>0%</span></div>  
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>  
-                    </div>  
-                    <button class="action-btn" onclick="alert('غير مشترك، يرجى تفعيل الكود أولاً.')">مشاهدة المحاضرات ➔</button>  
-                </div>  
-            </div>  
-
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #38bdf8, #6366f1);">  
-                    🕌 <span class="badge">أزهري</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">كورس العقيدة الإسلامية والتصميم الإيماني</div>  
-                    <div class="card-desc">دراسة الإلهيات، النبوات، والسمعيات ومناقشة الشبهات بأسلوب عقلي وبرهاني حديث.</div>  
-                    <div class="progress-box">  
-                        <div class="progress-title"><span>نسبة إنجاز الكورس</span><span>0%</span></div>  
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>  
-                    </div>  
-                    <button class="action-btn" onclick="alert('غير مشترك، يرجى تفعيل الكود أولاً.')">مشاهدة المحاضرات ➔</button>  
-                </div>  
-            </div>  
-
-            <div class="card-box">  
-                <div class="card-banner" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">  
-                    📚 <span class="badge">أزهري</span>  
-                </div>  
-                <div class="card-body">  
-                    <div class="card-title">كورس الفقه الشافعي (العبادات والمعاملات)</div>  
-                    <div class="card-desc">متن أبي شجاع، متن التنبيه، وشرح أدلة المذهب الشافعي بالتفصيل المسطور.</div>  
-                    <div class="progress-box">  
-                        <div class="progress-title"><span>نسبة إنجاز الكورس</span><span>0%</span></div>  
-                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;"></div></div>  
-                    </div>  
-                    <button class="action-btn" onclick="alert('غير مشترك، يرجى تفعيل الكود أولاً.')">مشاهدة المحاضرات ➔</button>  
-                </div>  
-            </div>  
-
-        </div>  
-    </div>  
-
-    <!-- ================= 3. قسم الامتحانات ================= -->  
-    <div id="examsTab" class="tab-section">  
-        <div class="section-header"><h2>الامتحانات والاختبارات التفاعلية</h2></div>  
-        <div class="grid-layout">  
-
-            <div class="card-box">  
-                <div class="card-body">  
-                    <span style="font-size:30px;">📝</span>  
-                    <div class="card-title">امتحان شامل على علم الميراث</div>  
-                    <div class="card-desc">عدد الأسئلة: 20 سؤال اختياري | المدة: 30 دقيقة | تصحيح إلكتروني فوري.</div>  
-                    <button class="action-btn" style="background: var(--success-gradient); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);" onclick="alert('يجب تفعيل الاشتراك لمخول دخول الامتحان.')">ابدأ الامتحان الآن ⏱️</button>  
-                </div>  
-            </div>  
-
-        </div>  
-    </div>  
-
-    <!-- ================= 4. قسم الاشتراكات وتفعيل الأكواد ================= -->  
-    <div id="subscriptionsTab" class="tab-section">  
-        <div class="section-header"><h2>تفعيل الأكواد والاشتراكات</h2></div>  
-          
-        <div class="code-input-box">  
-            <input type="text" id="couponCode" placeholder="أدخل كود الشحن / الاشتراك هنا (مثال: SHARIA2026)">  
-            <button class="action-btn" style="width: auto; padding: 0 30px; margin: 0;" onclick="activateCode()">تفعيل الكود ⚡</button>  
-        </div>  
-
-        <div class="section-header"><h3 style="font-size: 18px;">الباقات المتاحة للاشتراك</h3></div>  
-        <div class="grid-layout">  
-
-            <div class="card-box">  
-                <div class="card-body">  
-                    <div class="card-title">اشتراك الفصل الدراسي الأول كامل</div>  
-                    <div class="card-desc">يشمل جميع كورسات الشريعة والمذهب الشافعي طوال الترم.</div>  
-                    <div style="font-size:24px; font-weight:800; color:var(--primary); margin:10px 0;">2000 ج.م</div>  
-                    <button class="action-btn" onclick="window.open('https://wa.me/201225689906?text=السلام%20عليكم%20ارغب%20في%20الاشتراك%20بالفصل%20الدراسي', '_blank')">اطلب الاشتراك 💳</button>  
-                </div>  
-            </div>  
-
-        </div>  
-    </div>  
-
-    <!-- ================= 5. قسم الدعم الفني ================= -->  
-    <div id="supportTab" class="tab-section">  
-        <div class="section-header"><h2>الدعم الفني والمساعدة</h2></div>  
-        <div class="card-box" style="padding: 30px; max-width: 600px;">  
-            <h3 style="margin-bottom: 15px; color: var(--text-title);">هل واجهتك مشكلة في تفعيل الكود أو الكورسات؟</h3>  
-            <p class="card-desc" style="margin-bottom: 20px;">تواصل مباشرة مع فريق الدعم الفني الخاص بمنصة د. عبد الحق العليدي عبر الواتساب للحصول على مساعدة فورية.</p>  
-            <button class="action-btn" style="background: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);" onclick="window.open('https://wa.me/201225689906?text=السلام%20عليكم%20احتاج%20مساعدة%20في%20المنصة', '_blank')">التواصل عبر الواتساب 💬</button>  
-        </div>  
-    </div>  
-
-</main>  
-
-<!-- جلب اسم الطالب والفرقة الدراسية تلقائياً من الـ localStorage -->  
-<script>  
-    window.addEventListener('DOMContentLoaded', () => {  
-        let studentName = 'طالب أزهري';  
-        let studentGrade = 'الفرقة الدراسية';  
-
-        const storedStudent = localStorage.getItem('currentStudent');  
-        if (storedStudent) {  
-            try {  
-                const studentObj = JSON.parse(storedStudent);  
-                studentName = (studentObj.firstName || '') + ' ' + (studentObj.lastName || '');  
-                studentGrade = studentObj.grade || 'الفرقة الدراسية';  
-            } catch (e) {  
-                console.error(e);  
-            }  
-        }  
-          
-        const welcomeElement = document.getElementById('studentWelcomeName');  
-        if (welcomeElement) {  
-            welcomeElement.innerHTML = `أهلاً بك يا ${studentName.trim()} 👋`;  
-        }  
-
-        const profileNameElement = document.getElementById('studentProfileName');  
-        if (profileNameElement) {  
-            profileNameElement.textContent = studentName.trim();  
-        }  
-
-        const avatarElement = document.getElementById('avatarInitial');  
-        if (avatarElement && studentName.length > 0) {  
-            avatarElement.textContent = studentName.trim().charAt(0);  
-        }  
-
-        const gradeElement = document.getElementById('studentGrade');  
-        if (gradeElement) {  
-            gradeElement.textContent = studentGrade;  
-        }  
-
-        // استرجاع المظهر (داكن / مضيء)  
-        const savedTheme = localStorage.getItem('theme');  
-        const themeBtn = document.getElementById('themeToggleBtn');  
-        if (savedTheme === 'dark') {  
-            document.documentElement.setAttribute('data-theme', 'dark');  
-            if(themeBtn) themeBtn.innerHTML = '🌙';  
-        }  
-    });  
-
-    function switchTab(tabId, element) {  
-        const tabs = document.querySelectorAll('.tab-section');  
-        tabs.forEach(tab => tab.classList.remove('active-tab'));  
-
-        const menuItems = document.querySelectorAll('.menu-item');  
-        menuItems.forEach(item => item.classList.remove('active'));  
-
-        document.getElementById(tabId).classList.add('active-tab');  
-        if(element) {  
-            element.classList.add('active');  
-        }  
-    }  
-
-    function activateCode() {  
-        const code = document.getElementById('couponCode').value.trim();  
-        if(code === "") {  
-            alert("يرجى كتابة كود الاشتراك أولاً!");  
-        } else {  
-            alert("🎉 تم تفعيل الكود (" + code + ") بنجاح! تم فتح المحتوى الخاص بك.");  
-            document.getElementById('couponCode').value = "";  
-        }  
-    }  
-
-    function toggleTheme() {  
-        const html = document.documentElement;  
-        const themeBtn = document.getElementById('themeToggleBtn');  
-          
-        if (html.getAttribute('data-theme') === 'dark') {  
-            html.removeAttribute('data-theme');  
-            themeBtn.innerHTML = '💡';  
-            localStorage.setItem('theme', 'light');  
-        } else {  
-            html.setAttribute('data-theme', 'dark');  
-            themeBtn.innerHTML = '🌙';  
-            localStorage.setItem('theme', 'dark');  
-        }  
-    }  
-</script>
-
-</body>  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>د. عبد الحق العليدي</title>
+
+    <!-- استدعاء مكتبة FontAwesome للأيقونات الحقيقية -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- خط Cairo الاحترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', Tahoma, Arial, sans-serif;
+        }
+
+        :root {
+            --bg: #f0f4f8;
+            --card: #ffffff;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --text: #0f172a;
+            --muted: #475569;
+            --input: #f8fafc;
+            --border: #cbd5e1;
+            --success: #10b981;
+        }
+
+        body.dark {
+            --bg: #0b1329;
+            --card: #152238;
+            --primary: #38bdf8;
+            --primary-dark: #0284c7;
+            --text: #ffffff;
+            --muted: #94a3b8;
+            --input: #1e293b;
+            --border: #334155;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.25), transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(14, 165, 233, 0.2), transparent 45%),
+                var(--bg);
+            color: var(--text);
+            transition: 0.3s;
+            overflow-x: hidden;
+        }
+
+        .theme-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--card);
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.2);
+            z-index: 100;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .admin-secret-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--muted);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .admin-secret-btn:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        /* الحاوية الكبرى تأخذ عرض الشاشة بالكامل وتقسمها بالنصف تماماً (50% لكل قسم) */
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 20px 40px;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            min-height: 90vh;
+            display: none; 
+        }
+
+        .card {
+            flex: 1;
+            width: 50%;
+            background: var(--card);
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(2, 132, 199, 0.15);
+        }
+
+        .side-image {
+            flex: 1;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(56, 189, 248, 0.12));
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            padding: 30px;
+        }
+
+        .side-image img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(2, 132, 199, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .header p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .section-title {
+            margin: 22px 0 14px;
+            padding-right: 10px;
+            border-right: 4px solid var(--primary);
+            font-size: 15px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        .required {
+            color: #e11d48;
+        }
+
+        input, select {
+            width: 100%;
+            height: 48px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0 14px;
+            background: var(--input);
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-left: 45px;
+        }
+
+        .show-password {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 50px;
+            margin-top: 24px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(2, 132, 199, 0.4);
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .login a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error-message {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(225, 29, 72, 0.15);
+            border: 1px solid #e11d48;
+            color: #e11d48;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* نافذة النجاح المنبثقة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            width: 55px;
+            height: 55px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 12px;
+            border: 2px solid #10b981;
+        }
+
+        .modal-box h3 {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .modal-btn {
+            margin-top: 15px;
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #0369a1;
+        }
+
+        /* الهيدر العلوي للموقع */
+        .top-navbar {
+            width: 92%;
+            max-width: 1350px;
+            margin: 20px auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            color: var(--text);
+            font-size: 17px;
+        }
+
+        .nav-logo-group span {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: #ffffff;
+            border: none;
+        }
+
+        .nav-btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--primary);
+        }
+
+        .features-section {
+            width: 92%;
+            max-width: 1300px;
+            margin: 35px auto;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #0284c7, #0369a1, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .feature-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+            transition: 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .footer-showcase {
+            width: 92%;
+            max-width: 1300px;
+            margin: 35px auto 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 20px 30px;
+            border-radius: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .ai-assistant-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .widget-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .ai-info h4 {
+            font-size: 15px;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .ai-info p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .social-icons-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .social-widget-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            text-decoration: none;
+            color: var(--text);
+            transition: 0.3s;
+        }
+
+        .social-widget-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 📱 تخصيصات وتعديلات الموبايل الاحترافية (Mobile Responsive) */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column-reverse;
+                padding: 20px 10px;
+                gap: 20px;
+            }
+            .card, .side-image {
+                flex: 1 1 100%;
+                width: 100%;
+            }
+            .card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+            .side-image img {
+                max-height: 280px; 
+                max-width: 100%;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .top-navbar {
+                width: 95%;
+                padding: 10px 15px;
+                margin: 15px auto;
+                border-radius: 20px;
+            }
+            .nav-logo-group {
+                font-size: 14px;
+            }
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .features-title {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+            .feature-card {
+                padding: 18px 10px;
+                min-height: 130px;
+                border-radius: 16px;
+            }
+            .feature-icon {
+                font-size: 26px;
+            }
+            .feature-text {
+                font-size: 13px;
+            }
+            .footer-showcase {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+                gap: 15px;
+            }
+            .ai-assistant-badge {
+                flex-direction: column;
+                text-align: center;
+            }
+            .social-icons-group {
+                justify-content: center;
+                width: 100%;
+            }
+            .theme-btn {
+                top: 15px;
+                left: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+            .admin-secret-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+    <button class="admin-secret-btn" onclick="openAdminDashboard()" title="دخول لوحة التحكم">⚙️</button>
+
+    <!-- نافذة منبثقة للنجاح -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-box">
+            <div class="modal-icon">✓</div>
+            <h3>تم انشاء حسابك و تسجيل الدخول بنجاح !</h3>
+            <p style="color: var(--muted); font-size: 12px;">اضغط حسناً للاستمرار</p>
+            <button class="modal-btn" onclick="redirectToDashboard()">حسناً</button>
+        </div>
+    </div>
+
+    <div id="landingView">
+        <div class="top-navbar">
+            <div class="nav-logo-group">
+                🎓 <span> د. عبد الحق العليدي </span>
+            </div>
+            <div class="nav-buttons-group">
+                <button class="nav-btn nav-btn-primary" onclick="showRegisterForm()">حساب جديد</button>
+                <button class="nav-btn nav-btn-outline" onclick="showLoginForm()">تسجيل الدخول</button>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2 class="features-title">ليه تشترك معانا؟</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon">💡</div><div class="feature-text">شرح مبسط ومفهوم</div></div>
+                <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-text">فيديوهات بروسومات توضيحية</div></div>
+                <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-text">تمارين تفاعلية على الدروس</div></div>
+                <div class="feature-card"><div class="feature-icon">🛡️</div><div class="feature-text">مرونة كاملة في المذاكرة</div></div>
+                <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-text">اختبارات مستمرة</div></div>
+                <div class="feature-card"><div class="feature-icon">📚</div><div class="feature-text">محتوى متكامل ومنظم</div></div>
+                <div class="feature-card"><div class="feature-icon">🔄</div><div class="feature-text">تحديث مستمر حسب المنهج</div></div>
+                <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-text">مجتمع طلابي ضخم</div></div>
+            </div>
+        </div>
+
+        <div class="footer-showcase">
+            <div class="ai-assistant-badge">
+                <div class="widget-icon-box">🤖</div>
+                <div class="ai-info">
+                    <h4>نظام المساعد الذكي (AI)</h4>
+                    <p>مساعدتك الدراسية متاحة على مدار الساعة</p>
+                </div>
+            </div>
+
+            <div class="social-icons-group">
+                <a href="https://wa.me/201225689906" target="_blank" class="social-widget-btn"><i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 18px;"></i> واتساب المنصة</a>
+                <a href="https://www.facebook.com/share/1EczpBzYZ9/" target="_blank" class="social-widget-btn"><i class="fa-brands fa-facebook" style="color: #1877f2; font-size: 18px;"></i> صفحة الفيسبوك</a>
+                <a href="https://t.me/abelhak" target="_blank" class="social-widget-btn"><i class="fa-brands fa-telegram" style="color: #229ed9; font-size: 18px;"></i> تليجرام الشرعية</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="formsContainer">
+        <!-- 1. نموذج إنشاء حساب -->
+        <div class="card" id="registerCard">
+            <div class="header">
+                <div class="logo">🎓</div>
+                <h1>د. عبد الحق العليدي</h1>
+                <p>إنشاء حساب طالب جديد</p>
+            </div>
+
+            <form id="registerForm" onsubmit="registerStudent(event)">
+                <div class="section-title">بيانات الطالب</div>
+                <div class="form-grid">
+                    <div class="field"><label>الاسم الأول <span class="required">*</span></label><input type="text" id="firstName" required></div>
+                    <div class="field"><label>الاسم الأخير <span class="required">*</span></label><input type="text" id="lastName" required></div>
+                    <div class="field"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="studentPhone" maxlength="11" required></div>
+                    <div class="field"><label>رقم هاتف ولي الأمر <span class="required">*</span></label><input type="tel" id="parentPhone" maxlength="11" required></div>
+                    <div class="field full"><label>البريد الإلكتروني <span class="required">*</span></label><input type="email" id="email" required></div>
+                    <div class="field"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="password" minlength="6" required><button type="button" class="show-password" onclick="showPassword('password', this)">👁️</button></div></div>
+                    <div class="field"><label>تأكيد كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="confirmPassword" minlength="6" required><button type="button" class="show-password" onclick="showPassword('confirmPassword', this)">👁️</button></div></div>
+                </div>
+
+                <div class="section-title">البيانات الدراسية</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label>اختر الصف الدراسي <span class="required">*</span></label>
+                        <select id="grade" required>
+                            <option value="">اختر الصف الدراسي</option>
+                            <option value="الفرقة الأولى">الفرقة الأولى</option>
+                            <option value="الفرقة الثانية">الفرقة الثانية</option>
+                            <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+                            <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>اختر المحافظة <span class="required">*</span></label>
+                        <select id="governorate" required>
+                            <option value="">اختر المحافظة</option>
+                            <option>بورسعيد</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="registerBtn" class="submit-btn">إنشاء الحساب</button>
+                <div class="error-message" id="registerErrorMessage"></div>
+                <div class="login">لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a></div>
+            </form>
+        </div>
+
+        <!-- 2. نموذج تسجيل الدخول -->
+        <div class="card" id="loginCard" style="display: none;">
+            <div class="header">
+                <div class="logo">🎓</div>
+                <h1>تسجيل الدخول</h1>
+                <p>أدخل رقم الهاتف وكلمة السر للمتابعة</p>
+            </div>
+
+            <form onsubmit="loginStudent(event)">
+                <div class="form-grid">
+                    <div class="field full"><label>رقم هاتف الطالب <span class="required">*</span></label><input type="tel" id="loginPhone" maxlength="11" required></div>
+                    <div class="field full"><label>كلمة السر <span class="required">*</span></label><div class="password-box"><input type="password" id="loginPassword" required><button type="button" class="show-password" onclick="showPassword('loginPassword', this)">👁️</button></div></div>
+                </div>
+
+                <button type="submit" class="submit-btn">دخول المنصة</button>
+                <div class="error-message" id="loginErrorMessage"></div>
+                <div class="login">ليس لديك حساب؟ <a onclick="showRegisterForm()">حساب جديد</a></div>
+            </form>
+        </div>
+
+        <div class="side-image">
+            <img src="doctor.png" alt="د. عبد الحق">
+        </div>
+    </div>
+
+    <script>
+        function showRegisterForm() {
+            document.getElementById("landingView").style.display = "none";
+            document.getElementById("formsContainer").style.display = "flex";
+            document.getElementById("registerCard").style.display = "block";
+            document.getElementById("loginCard").style.display = "none";
+        }
+
+        function showLoginForm() {
+            document.getElementById("landingView").style.display = "none";
+            document.getElementById("formsContainer").style.display = "flex";
+            document.getElementById("registerCard").style.display = "none";
+            document.getElementById("loginCard").style.display = "block";
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("dark");
+            const btn = document.getElementById("themeBtn");
+            btn.innerHTML = document.body.classList.contains("dark") ? "☀️" : "🌙";
+        }
+
+        function showPassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = "🙈";
+            } else {
+                input.type = "password";
+                btn.innerHTML = "👁️";
+            }
+        }
+
+        function openAdminDashboard() {
+            const pass = prompt("أدخل كلمة سر لوحة التحكم:");
+            if (pass === "admin123") {
+                window.location.href = "admin.html";
+            } else if (pass !== null) {
+                alert("كلمة السر غير صحيحة!");
+            }
+        }
+
+        // رابط جوجل شيت الخاص بكِ
+        const SHEET_URL = "https://script.google.com/macros/s/AKfycbzVn1oe4OO6TiYOEReT8jKTb40qXEjtUDLQBbvI2ddHC2405OtoAezyXQrSJ-9TmFaw/exec";
+
+        async function trackUser(studentData) {
+          let form = new FormData();
+          form.append("firstName", studentData.firstName);
+          form.append("lastName", studentData.lastName);
+          form.append("phone", studentData.phone);
+          form.append("parentPhone", studentData.parentPhone);
+          form.append("email", studentData.email);
+          form.append("grade", studentData.grade);
+          form.append("governorate", studentData.governorate);
+          form.append("password", studentData.password);
+          form.append("action", "registered");
+
+          try {
+              await fetch(SHEET_URL, { method: "POST", body: form });
+              console.log("done");
+          } catch (error) {
+              console.error("Error sending data", error);
+          }
+        }
+
+        function registerStudent(event) {
+            event.preventDefault();
+            const pass = document.getElementById("password").value;
+            const confirmPass = document.getElementById("confirmPassword").value;
+            const phone = document.getElementById("studentPhone").value;
+            const email = document.getElementById("email").value;
+            const errorDiv = document.getElementById("registerErrorMessage");
+            errorDiv.style.display = "none";
+
+            if (pass !== confirmPass) {
+                errorDiv.innerText = "كلمة السر وتأكيد كلمة السر غير متطابقين";
+                errorDiv.style.display = "block";
+                return;
+            }
+
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            if (students.find(s => s.phone === phone || s.email === email)) {
+                errorDiv.innerText = "هذا الرقم أو البريد الإلكتروني مسجل بالفعل!";
+                errorDiv.style.display = "block";
+                return;
+            }
+
+            const newStudent = {
+                firstName: document.getElementById("firstName").value,
+                lastName: document.getElementById("lastName").value,
+                phone: phone,
+                email: email,
+                parentPhone: document.getElementById("parentPhone").value,
+                grade: document.getElementById("grade").value,
+                governorate: document.getElementById("governorate").value,
+                password: pass,
+                totalLectures: 0,
+                watchedLectures: 0
+            };
+
+            students.push(newStudent);
+            localStorage.setItem("platformStudents", JSON.stringify(students));
+            localStorage.setItem("currentStudent", JSON.stringify(newStudent));
+
+            // إرسال البيانات كاملة لجوجل شيت عند التسجيل الناجح
+            trackUser(newStudent);
+
+            document.getElementById("successModal").style.display = "flex";
+        }
+
+        function loginStudent(event) {
+            event.preventDefault();
+            const phone = document.getElementById("loginPhone").value;
+            const pass = document.getElementById("loginPassword").value;
+            const errorDiv = document.getElementById("loginErrorMessage");
+            errorDiv.style.display = "none";
+
+            let students = JSON.parse(localStorage.getItem("platformStudents")) || [];
+            let student = students.find(s => s.phone === phone);
+
+            if (student) {
+                if (student.password && student.password !== pass) {
+                    errorDiv.innerText = "كلمة السر غير صحيحة!";
+                    errorDiv.style.display = "block";
+                    return;
+                }
+                localStorage.setItem("currentStudent", JSON.stringify(student));
+                document.getElementById("successModal").style.display = "flex";
+            } else {
+                errorDiv.innerText = "هذا الرقم غير مسجل، يرجى إنشاء حساب جديد!";
+                errorDiv.style.display = "block";
+            }
+        }
+
+        function redirectToDashboard() {
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
 </html>
